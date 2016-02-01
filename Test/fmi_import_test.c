@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	int ret;
 
 	if(argc < 3) {
-		printf("Usage: %s <fmu_file> <temporary_dir>\n", argv[0]);
+		printf("Usage: %s <fmu_file> <temporary_dir> [0=default callbacks]\n", argv[0]);
 		do_exit(CTEST_RETURN_FAIL);
 	}
 
@@ -67,7 +67,15 @@ int main(int argc, char *argv[])
 	printf("Library build stamp:\n%s\n", fmilib_get_build_stamp());
 #endif
 
-	context = fmi_import_allocate_context(&callbacks);
+	if(argc == 4)
+	{
+	    // Allocate with default callbacks
+	    context = fmi_import_allocate_context(0);
+	}
+	else
+	{
+	    context = fmi_import_allocate_context(&callbacks);
+	}
 
 	version = fmi_import_get_fmi_version(context, FMUPath, tmpPath);
 

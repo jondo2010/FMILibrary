@@ -22,18 +22,14 @@
 static char* MODULE="FMIXML";
 
 fmi_xml_context_t* fmi_xml_allocate_context( jm_callbacks* callbacks) {
-	jm_callbacks* cb;
 	fmi_xml_context_t* c;
 
 	jm_log_debug(callbacks, MODULE, "Allocating context for XML parsing module");
 
-    if(callbacks) {
-        cb = callbacks;
-    }
-    else {
-        cb = jm_get_default_callbacks();
-    }
-    c = cb->malloc(sizeof(fmi_xml_context_t));
+	if(!callbacks) {
+	    callbacks = jm_get_default_callbacks();
+	}
+    c = callbacks->malloc(sizeof(fmi_xml_context_t));
     if(!c) {
 		jm_log_fatal(callbacks, MODULE, "Could not allocate memory");
 		return 0;

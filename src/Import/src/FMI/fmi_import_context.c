@@ -25,9 +25,10 @@
 
 #define MODULE "FMILIB"
 
-fmi_import_context_t* fmi_import_allocate_context( jm_callbacks* callbacks) {
-	jm_log_verbose(callbacks, MODULE, "Allocating FMIL context");
-	return fmi_xml_allocate_context(callbacks);
+fmi_import_context_t* fmi_import_allocate_context(jm_callbacks* callbacks) {
+    fmi_xml_context_t *const c = fmi_xml_allocate_context(callbacks);
+    jm_log_verbose(c->callbacks, MODULE, "Allocating FMIL context");
+    return c;
 }
 
 void fmi_import_free_context( fmi_import_context_t* c) {
