@@ -22,13 +22,16 @@ char* fmi_construct_dll_dir_name(jm_callbacks* callbacks, const char* fmu_unzipp
 	char* dir_path;
 	size_t len;
 
-	assert( fmu_unzipped_path && callbacks);
+	assert(fmu_unzipped_path);
 
 	len = 
 		strlen(fmu_unzipped_path) + strlen(FMI_FILE_SEP)
 		+ strlen(FMI_BINARIES) + strlen(FMI_FILE_SEP) 
 		+ strlen(FMI_PLATFORM) + strlen(FMI_FILE_SEP) + 1;
 
+	if(!callbacks) {
+	    callbacks = jm_get_default_callbacks();
+	}
 	dir_path = (char*)callbacks->malloc(len);
 	if (dir_path == NULL) {
 		jm_log_fatal(callbacks, "FMIUT", "Failed to allocate memory.");
@@ -43,11 +46,14 @@ char* fmi_construct_dll_dir_name(jm_callbacks* callbacks, const char* fmu_unzipp
 char* fmi_construct_dll_file_name(jm_callbacks* callbacks, const char* dll_dir_name, const char* model_identifier) {
 	char* fname;
 	size_t len;
-	assert(callbacks && model_identifier);
+	assert(model_identifier);
 	len = 
 		strlen(dll_dir_name) +
 		strlen(model_identifier) 
 		+ strlen(FMI_DLL_EXT) + 1;
+	if(!callbacks) {
+	    callbacks = jm_get_default_callbacks();
+	}
 	fname = (char*)callbacks->malloc(len);
 	if (fname == NULL) {
 		jm_log_fatal(callbacks, "FMIUT", "Failed to allocate memory.");

@@ -169,10 +169,10 @@ jm_status_enu_t jm_rmdir(jm_callbacks* cb, const char* dir) {
 #else
     const char* fmt_cmd = "rm -rf %s";
 #endif
-    char * buf = (char*)cb->calloc(sizeof(char), strlen(dir)+strlen(fmt_cmd)+1);
 	if(!cb) {
 		cb = jm_get_default_callbacks();
 	}
+    char * buf = (char*)cb->calloc(sizeof(char), strlen(dir)+strlen(fmt_cmd)+1);
 	if(!buf) {
 	    jm_log_error(cb,module,"Could not allocate memory");
 		return jm_status_error;

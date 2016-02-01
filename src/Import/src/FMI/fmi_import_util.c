@@ -47,6 +47,10 @@ char* fmi_import_get_dll_path(const char* fmu_unzipped_path, const char* model_i
 
 	len = strlen(fmu_unzipped_path) + strlen(FMI_FILE_SEP) + strlen(FMI_BINARIES) + strlen(FMI_FILE_SEP) + strlen(FMI_PLATFORM) + strlen(FMI_FILE_SEP) + strlen(model_identifier) + strlen(FMI_DLL_EXT) + 1;
 
+	if(!callbacks)
+	{
+	    callbacks = jm_get_default_callbacks();
+	}
 	dll_path = (char*)callbacks->calloc(len, sizeof(char));
 	if (dll_path == NULL) {
 		jm_log_fatal(callbacks, "FMILIB", "Failed to allocate memory.");
@@ -65,6 +69,10 @@ char* fmi_import_get_model_description_path(const char* fmu_unzipped_path, jm_ca
 
 	len = strlen(fmu_unzipped_path) + strlen(FMI_FILE_SEP) + strlen(FMI_MODEL_DESCRIPTION_XML) + 1;
 
+	if(!callbacks)
+	{
+	    callbacks = jm_get_default_callbacks();
+	}
 	model_description_path = (char*)callbacks->calloc(len, sizeof(char));
 	if (model_description_path == NULL) {
 		callbacks->logger(NULL, "FMIIMPORTUTIL", jm_log_level_error, "Failed to allocate memory.");
