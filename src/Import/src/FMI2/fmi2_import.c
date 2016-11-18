@@ -54,7 +54,7 @@ fmi2_import_t* fmi2_import_allocate(jm_callbacks* cb) {
 	return fmu;
 }
 
-const char* fmi2_import_get_last_error(fmi2_import_t* fmu) {
+const char* fmi2_import_get_last_error(const fmi2_import_t* fmu) {
 	return jm_get_last_error(fmu->callbacks);
 }
 
@@ -127,7 +127,7 @@ void fmi2_import_free(fmi2_import_t* fmu) {
     cb->free(fmu);
 }
 
-int fmi2_import_check_has_FMU(fmi2_import_t* fmu) {
+int fmi2_import_check_has_FMU(const fmi2_import_t* fmu) {
 	if(!fmu->md) {
 		jm_log_error(fmu->callbacks, module,"No FMU is loaded");
 		return 0;
@@ -135,85 +135,85 @@ int fmi2_import_check_has_FMU(fmi2_import_t* fmu) {
 	return 1;
 }
 
-const char* fmi2_import_get_model_name(fmi2_import_t* fmu) {
+const char* fmi2_import_get_model_name(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_model_name(fmu->md);
 }
 
-unsigned int fmi2_import_get_capability(fmi2_import_t* fmu , fmi2_capabilities_enu_t id) {
+unsigned int fmi2_import_get_capability(const fmi2_import_t* fmu , const fmi2_capabilities_enu_t id) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_capability(fmu->md, id);
 }
 
 
-const char* fmi2_import_get_model_identifier_ME(fmi2_import_t* fmu) {
+const char* fmi2_import_get_model_identifier_ME(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_model_identifier_ME(fmu->md);
 }
 
-const char* fmi2_import_get_model_identifier_CS(fmi2_import_t* fmu) {
+const char* fmi2_import_get_model_identifier_CS(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_model_identifier_CS(fmu->md);
 }
 
-const char* fmi2_import_get_GUID(fmi2_import_t* fmu){
+const char* fmi2_import_get_GUID(const fmi2_import_t* fmu){
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
     return fmi2_xml_get_GUID(fmu->md);
 }
 
-const char* fmi2_import_get_description(fmi2_import_t* fmu) {
+const char* fmi2_import_get_description(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_description(fmu->md);
 }
 
-const char* fmi2_import_get_author(fmi2_import_t* fmu) {
+const char* fmi2_import_get_author(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_author(fmu->md);
 }
 
-const char* fmi2_import_get_license(fmi2_import_t* fmu) {
+const char* fmi2_import_get_license(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_license(fmu->md);
 }
-const char* fmi2_import_get_copyright(fmi2_import_t* fmu) {
+const char* fmi2_import_get_copyright(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_copyright(fmu->md);
 }
 
-const char* fmi2_import_get_model_standard_version(fmi2_import_t* fmu) {
+const char* fmi2_import_get_model_standard_version(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_model_standard_version(fmu->md);
 }
 
-const char* fmi2_import_get_model_version(fmi2_import_t* fmu) {
+const char* fmi2_import_get_model_version(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_model_version(fmu->md);
 }
 
-const char* fmi2_import_get_generation_tool(fmi2_import_t* fmu) {
+const char* fmi2_import_get_generation_tool(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_generation_tool(fmu->md);
 }
 
-const char* fmi2_import_get_generation_date_and_time(fmi2_import_t* fmu) {
+const char* fmi2_import_get_generation_date_and_time(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_generation_date_and_time(fmu->md);
 }
 
-fmi2_variable_naming_convension_enu_t fmi2_import_get_naming_convention(fmi2_import_t* fmu) {
+fmi2_variable_naming_convension_enu_t fmi2_import_get_naming_convention(const fmi2_import_t* fmu) {
 	if(!fmu->md) {
 		jm_log_error(fmu->callbacks, module,"No FMU is loaded");
 		return fmi2_naming_enu_unknown;
@@ -221,43 +221,43 @@ fmi2_variable_naming_convension_enu_t fmi2_import_get_naming_convention(fmi2_imp
 	return fmi2_xml_get_naming_convention(fmu->md);
 }
 
-size_t fmi2_import_get_number_of_continuous_states(fmi2_import_t* fmu) {
+size_t fmi2_import_get_number_of_continuous_states(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_number_of_continuous_states(fmu->md);
 }
 
-size_t fmi2_import_get_number_of_event_indicators(fmi2_import_t* fmu) {
+size_t fmi2_import_get_number_of_event_indicators(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_number_of_event_indicators(fmu->md);
 }
 
-double fmi2_import_get_default_experiment_start(fmi2_import_t* fmu) {
+double fmi2_import_get_default_experiment_start(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_default_experiment_start(fmu->md);
 }
 
-double fmi2_import_get_default_experiment_stop(fmi2_import_t* fmu) {
+double fmi2_import_get_default_experiment_stop(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_default_experiment_stop(fmu->md);
 }
 
-double fmi2_import_get_default_experiment_tolerance(fmi2_import_t* fmu) {
+double fmi2_import_get_default_experiment_tolerance(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_default_experiment_tolerance(fmu->md);
 }
 
-double fmi2_import_get_default_experiment_step(fmi2_import_t* fmu) {
+double fmi2_import_get_default_experiment_step(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_default_experiment_step(fmu->md);
 }
 
-fmi2_import_unit_definitions_t* fmi2_import_get_unit_definitions(fmi2_import_t* fmu) {
+fmi2_import_unit_definitions_t* fmi2_import_get_unit_definitions(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_unit_definitions(fmu->md);
@@ -267,13 +267,13 @@ unsigned int  fmi2_import_get_unit_definitions_number(fmi2_import_unit_definitio
 	return fmi2_xml_get_unit_definitions_number(ud);
 }
 
-fmi2_import_type_definitions_t* fmi2_import_get_type_definitions(fmi2_import_t* fmu) {
+fmi2_import_type_definitions_t* fmi2_import_get_type_definitions(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_type_definitions(fmu->md);
 }
 
-fmi2_import_variable_list_t* fmi2_import_vector_to_varlist(fmi2_import_t* fmu, jm_vector(jm_voidp)* vars) {
+fmi2_import_variable_list_t* fmi2_import_vector_to_varlist(const fmi2_import_t* fmu, jm_vector(jm_voidp)* vars) {
     fmi2_import_variable_list_t* vl;
     size_t nv, i;
 	if(!vars) return 0;
@@ -290,7 +290,7 @@ fmi2_import_variable_list_t* fmi2_import_vector_to_varlist(fmi2_import_t* fmu, j
 
 /* Get the list of all the variables in the model */
 /* 0 - original order as found in the XML file; 1 - sorted alfabetically by variable name; 2 sorted by types/value references. */
-fmi2_import_variable_list_t* fmi2_import_get_variable_list(fmi2_import_t* fmu, int sortOrder) {
+fmi2_import_variable_list_t* fmi2_import_get_variable_list(const fmi2_import_t* fmu, int sortOrder) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 	switch(sortOrder) {
 	case 0:
@@ -316,93 +316,93 @@ fmi2_import_variable_list_t* fmi2_import_get_variable_list(fmi2_import_t* fmu, i
 	return 0;
 }
 
-fmi2_fmu_kind_enu_t fmi2_import_get_fmu_kind(fmi2_import_t* fmu) {
+fmi2_fmu_kind_enu_t fmi2_import_get_fmu_kind(const fmi2_import_t* fmu) {
     return fmi2_xml_get_fmu_kind(fmu->md);
 }
 
-size_t fmi2_import_get_vendors_num(fmi2_import_t* fmu){
+size_t fmi2_import_get_vendors_num(const fmi2_import_t* fmu){
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_vendors_num(fmu->md);
 }
 
-const char* fmi2_import_get_vendor_name(fmi2_import_t* fmu, size_t  index){
+const char* fmi2_import_get_vendor_name(const fmi2_import_t* fmu, size_t  index){
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return fmi2_xml_get_vendor_name(fmu->md, index);
 }
 
 /** \brief Get the number of log categories defined in the XML */
-size_t fmi2_import_get_log_categories_num(fmi2_import_t* fmu) {
+size_t fmi2_import_get_log_categories_num(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_size(jm_string)(fmi2_xml_get_log_categories(fmu->md));
 }
 
 /** \brief Get the log category by index */
-const char* fmi2_import_get_log_category(fmi2_import_t* fmu, size_t  index) {
+const char* fmi2_import_get_log_category(const fmi2_import_t* fmu, size_t  index) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_item(jm_string)(fmi2_xml_get_log_categories(fmu->md), index);
 }
 
 /** \brief Get the log category description by index */
-const char* fmi2_import_get_log_category_description(fmi2_import_t* fmu, size_t  index) {
+const char* fmi2_import_get_log_category_description(const fmi2_import_t* fmu, size_t  index) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_item(jm_string)(fmi2_xml_get_log_category_descriptions(fmu->md), index);
 }
 
 /** \brief Get the number of source files for ME defined in the XML */
-size_t fmi2_import_get_source_files_me_num(fmi2_import_t* fmu) {
+size_t fmi2_import_get_source_files_me_num(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_size(jm_string)(fmi2_xml_get_source_files_me(fmu->md));
 }
 
 /** \brief Get the ME source file by index */
-const char* fmi2_import_get_source_file_me(fmi2_import_t* fmu, size_t  index) {
+const char* fmi2_import_get_source_file_me(const fmi2_import_t* fmu, size_t  index) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_item(jm_string)(fmi2_xml_get_source_files_me(fmu->md), index);
 }
 
 /** \brief Get the number of source files for CS defined in the XML */
-size_t fmi2_import_get_source_files_cs_num(fmi2_import_t* fmu) {
+size_t fmi2_import_get_source_files_cs_num(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_size(jm_string)(fmi2_xml_get_source_files_cs(fmu->md));
 }
 
 /** \brief Get the CS source file by index */
-const char* fmi2_import_get_source_file_cs(fmi2_import_t* fmu, size_t  index) {
+const char* fmi2_import_get_source_file_cs(const fmi2_import_t* fmu, const size_t  index) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 
 	return jm_vector_get_item(jm_string)(fmi2_xml_get_source_files_cs(fmu->md), index);
 }
 
 
-fmi2_import_variable_list_t* fmi2_import_get_outputs_list(fmi2_import_t* fmu) {
+fmi2_import_variable_list_t* fmi2_import_get_outputs_list(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 	return fmi2_import_vector_to_varlist(fmu, fmi2_xml_get_outputs(fmi2_xml_get_model_structure(fmu->md)));
 }
 
-fmi2_import_variable_list_t* fmi2_import_get_derivatives_list(fmi2_import_t* fmu){
+fmi2_import_variable_list_t* fmi2_import_get_derivatives_list(const fmi2_import_t* fmu){
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 	return fmi2_import_vector_to_varlist(fmu, fmi2_xml_get_derivatives(fmi2_xml_get_model_structure(fmu->md)));
 }
 
-fmi2_import_variable_list_t* fmi2_import_get_discrete_states_list(fmi2_import_t* fmu) {
+fmi2_import_variable_list_t* fmi2_import_get_discrete_states_list(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 	return fmi2_import_vector_to_varlist(fmu, fmi2_xml_get_discrete_states(fmi2_xml_get_model_structure(fmu->md)));
 }
 
-fmi2_import_variable_list_t* fmi2_import_get_initial_unknowns_list(fmi2_import_t* fmu) {
+fmi2_import_variable_list_t* fmi2_import_get_initial_unknowns_list(const fmi2_import_t* fmu) {
 	if(!fmi2_import_check_has_FMU(fmu)) return 0;
 	return fmi2_import_vector_to_varlist(fmu, fmi2_xml_get_initial_unknowns(fmi2_xml_get_model_structure(fmu->md)));
 }
 
-void fmi2_import_get_outputs_dependencies(fmi2_import_t* fmu,size_t** startIndex, size_t** dependency, char** factorKind) { 
+void fmi2_import_get_outputs_dependencies(const fmi2_import_t* fmu,size_t** startIndex, size_t** dependency, char** factorKind) {
     fmi2_xml_model_structure_t* ms; 
     if(!fmi2_import_check_has_FMU(fmu)) {
         *startIndex = 0;

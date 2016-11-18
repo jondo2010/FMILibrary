@@ -82,7 +82,7 @@ fmi2_capi_t* fmi2_capi_create_dllfmu(jm_callbacks* callbacks, const char* dllPat
 jm_status_enu_t fmi2_capi_load_fcn(fmi2_capi_t* fmu, unsigned int capabilities[]);
 
 /**
- * \brief Loads the FMU´s shared library. The shared library functions are not loaded in this call, see fmi2_import_create_dllfmu.
+ * \brief Loads the FMUï¿½s shared library. The shared library functions are not loaded in this call, see fmi2_import_create_dllfmu.
  * 
  * @param fmu A model description object returned by fmi2_import_allocate.
  * @return Error status. If the function returns with an error, no other C-API functions than fmi2_import_destroy_dllfmu are allowed to be called.
@@ -90,9 +90,9 @@ jm_status_enu_t fmi2_capi_load_fcn(fmi2_capi_t* fmu, unsigned int capabilities[]
 jm_status_enu_t fmi2_capi_load_dll(fmi2_capi_t* fmu);
 
 /**
- * \brief Frees the handle to the FMU´s shared library. After this function returnes, no other C-API functions than fmi2_import_destroy_dllfmu and fmi2_import_create_dllfmu are allowed to be called.
+ * \brief Frees the handle to the FMUï¿½s shared library. After this function returnes, no other C-API functions than fmi2_import_destroy_dllfmu and fmi2_import_create_dllfmu are allowed to be called.
  * 
- * @param fmu A model description object returned by fmi2_import_allocate that has loaded the FMU´s shared library, see fmi2_import_create_dllfmu.
+ * @param fmu A model description object returned by fmi2_import_allocate that has loaded the FMUï¿½s shared library, see fmi2_import_create_dllfmu.
  * @return Error status.
  */
 jm_status_enu_t fmi2_capi_free_dll(fmi2_capi_t* fmu);
@@ -143,7 +143,7 @@ const char* fmi2_capi_get_version(fmi2_capi_t* fmu);
  *
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_debug_logging(fmi2_capi_t* fmu, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]);
+fmi2_status_t fmi2_capi_set_debug_logging(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]);
 
 /**
  * \brief Calls the FMI function fmiInstantiate(...) 
@@ -157,7 +157,7 @@ fmi2_status_t fmi2_capi_set_debug_logging(fmi2_capi_t* fmu, fmi2_boolean_t loggi
  * @param loggingOn Enable or disable the debug logger.
  * @return An instance of a model.
  */
-fmi2_component_t fmi2_capi_instantiate(fmi2_capi_t* fmu,
+fmi2_component_t fmi2_capi_instantiate(const fmi2_capi_t* fmu,
     fmi2_string_t instanceName, fmi2_type_t fmuType, fmi2_string_t fmuGUID,
     fmi2_string_t fmuResourceLocation, fmi2_boolean_t visible,
     fmi2_boolean_t loggingOn);
@@ -167,7 +167,7 @@ fmi2_component_t fmi2_capi_instantiate(fmi2_capi_t* fmu,
  * 
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  */
-void fmi2_capi_free_instance(fmi2_capi_t* fmu);
+void fmi2_capi_free_instance(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 
 /**
@@ -181,10 +181,10 @@ void fmi2_capi_free_instance(fmi2_capi_t* fmu);
  * @param stopTime Stop time of the experiment, if @p stopTimeDefined is true
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_setup_experiment(fmi2_capi_t* fmu,
-    fmi2_boolean_t toleranceDefined, fmi2_real_t tolerance,
-    fmi2_real_t startTime, fmi2_boolean_t stopTimeDefined,
-    fmi2_real_t stopTime);
+fmi2_status_t fmi2_capi_setup_experiment(const fmi2_capi_t* fmu, fmi2_component_t c,
+    const fmi2_boolean_t toleranceDefined, const fmi2_real_t tolerance,
+    const fmi2_real_t startTime, const fmi2_boolean_t stopTimeDefined,
+    const fmi2_real_t stopTime);
 
 /**
  * \brief Calls the FMI function fmiEnterInitializationMode(...)
@@ -192,7 +192,7 @@ fmi2_status_t fmi2_capi_setup_experiment(fmi2_capi_t* fmu,
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_enter_initialization_mode(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_enter_initialization_mode(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiExitInitializationMode(...)
@@ -200,7 +200,7 @@ fmi2_status_t fmi2_capi_enter_initialization_mode(fmi2_capi_t* fmu);
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_exit_initialization_mode(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_exit_initialization_mode(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiTerminate(...)
@@ -208,7 +208,7 @@ fmi2_status_t fmi2_capi_exit_initialization_mode(fmi2_capi_t* fmu);
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_terminate(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_terminate(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiReset(...) 
@@ -216,7 +216,7 @@ fmi2_status_t fmi2_capi_terminate(fmi2_capi_t* fmu);
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_reset(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_reset(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 
 /**
@@ -228,7 +228,7 @@ fmi2_status_t fmi2_capi_reset(fmi2_capi_t* fmu);
  * @param value Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_real(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]);
+fmi2_status_t fmi2_capi_set_real(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]);
 
 /**
  * \brief Calls the FMI function fmiSetInteger(...) 
@@ -239,7 +239,7 @@ fmi2_status_t fmi2_capi_set_real(fmi2_capi_t* fmu, const fmi2_value_reference_t 
  * @param value Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_integer(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]);
+fmi2_status_t fmi2_capi_set_integer(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]);
 
 /**
  * \brief Calls the FMI function fmiSetBoolean(...) 
@@ -250,7 +250,7 @@ fmi2_status_t fmi2_capi_set_integer(fmi2_capi_t* fmu, const fmi2_value_reference
  * @param value Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_boolean(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]);
+fmi2_status_t fmi2_capi_set_boolean(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]);
 
 /**
  * \brief Calls the FMI function fmiSetString(...) 
@@ -261,7 +261,7 @@ fmi2_status_t fmi2_capi_set_boolean(fmi2_capi_t* fmu, const fmi2_value_reference
  * @param value Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_string(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]);
+fmi2_status_t fmi2_capi_set_string(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]);
 
 /**
  * \brief Calls the FMI function fmiGetReal(...) 
@@ -272,7 +272,7 @@ fmi2_status_t fmi2_capi_set_string(fmi2_capi_t* fmu, const fmi2_value_reference_
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_real(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]);
+fmi2_status_t fmi2_capi_get_real(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]);
 
 /**
  * \brief Calls the FMI function fmiGetInteger(...) 
@@ -283,7 +283,7 @@ fmi2_status_t fmi2_capi_get_real(fmi2_capi_t* fmu, const fmi2_value_reference_t 
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_integer(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]);
+fmi2_status_t fmi2_capi_get_integer(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]);
 
 /**
  * \brief Calls the FMI function fmiGetBoolean(...) 
@@ -294,7 +294,7 @@ fmi2_status_t fmi2_capi_get_integer(fmi2_capi_t* fmu, const fmi2_value_reference
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_boolean(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]);
+fmi2_status_t fmi2_capi_get_boolean(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]);
 
 /**
  * \brief Calls the FMI function fmiGetString(...) 
@@ -305,26 +305,26 @@ fmi2_status_t fmi2_capi_get_boolean(fmi2_capi_t* fmu, const fmi2_value_reference
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_string(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]);
+fmi2_status_t fmi2_capi_get_string(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]);
 
 
 /**
- * \brief Calls the FMI function fmiGetTypesPlatform(...) 
+ * \brief Calls the FMI function fmiGetTypesPlatform(...)
  * 
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return The platform the FMU was compiled for.
  */
 const char* fmi2_capi_get_types_platform(fmi2_capi_t* fmu);
 
-fmi2_status_t fmi2_capi_get_fmu_state           (fmi2_capi_t* fmu, fmi2_FMU_state_t* s);
-fmi2_status_t fmi2_capi_set_fmu_state           (fmi2_capi_t* fmu, fmi2_FMU_state_t s);
-fmi2_status_t fmi2_capi_free_fmu_state          (fmi2_capi_t* fmu, fmi2_FMU_state_t* s);
-fmi2_status_t fmi2_capi_serialized_fmu_state_size(fmi2_capi_t* fmu, fmi2_FMU_state_t s, size_t* sz);
-fmi2_status_t fmi2_capi_serialize_fmu_state     (fmi2_capi_t* fmu, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz);
-fmi2_status_t fmi2_capi_de_serialize_fmu_state  (fmi2_capi_t* fmu, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s);
+fmi2_status_t fmi2_capi_get_fmu_state           (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s);
+fmi2_status_t fmi2_capi_set_fmu_state           (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s);
+fmi2_status_t fmi2_capi_free_fmu_state          (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s);
+fmi2_status_t fmi2_capi_serialized_fmu_state_size(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s, size_t* sz);
+fmi2_status_t fmi2_capi_serialize_fmu_state     (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz);
+fmi2_status_t fmi2_capi_de_serialize_fmu_state  (const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s);
 
 /* Getting directional derivatives */
-fmi2_status_t fmi2_capi_get_directional_derivative(fmi2_capi_t* fmu, const fmi2_value_reference_t v_ref[], size_t nv,
+fmi2_status_t fmi2_capi_get_directional_derivative(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t v_ref[], size_t nv,
                                                                    const fmi2_value_reference_t z_ref[], size_t nz,
                                                                    const fmi2_real_t dv[], fmi2_real_t dz[]);
 /**@} */
@@ -339,7 +339,7 @@ fmi2_status_t fmi2_capi_get_directional_derivative(fmi2_capi_t* fmu, const fmi2_
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_enter_event_mode(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_enter_event_mode(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiNewDiscreteStates(...) 
@@ -348,7 +348,7 @@ fmi2_status_t fmi2_capi_enter_event_mode(fmi2_capi_t* fmu);
  * @param eventInfo Pointer to fmi2_event_info_t structure that will be filled in.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_new_discrete_states(fmi2_capi_t* fmu, fmi2_event_info_t* eventInfo);
+fmi2_status_t fmi2_capi_new_discrete_states(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_event_info_t* eventInfo);
 
 /**
  * \brief Calls the FMI function fmiEnterContinuousTimeMode(...) 
@@ -356,7 +356,7 @@ fmi2_status_t fmi2_capi_new_discrete_states(fmi2_capi_t* fmu, fmi2_event_info_t*
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_enter_continuous_time_mode(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_enter_continuous_time_mode(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 
 /**
@@ -366,7 +366,7 @@ fmi2_status_t fmi2_capi_enter_continuous_time_mode(fmi2_capi_t* fmu);
  * @param time Set the current time.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_time(fmi2_capi_t* fmu, fmi2_real_t time);
+fmi2_status_t fmi2_capi_set_time(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t time);
 
 /**
  * \brief Calls the FMI function fmiSetContinuousStates(...) 
@@ -376,7 +376,7 @@ fmi2_status_t fmi2_capi_set_time(fmi2_capi_t* fmu, fmi2_real_t time);
  * @param nx Number of states.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_continuous_states(fmi2_capi_t* fmu, const fmi2_real_t x[], size_t nx);
+fmi2_status_t fmi2_capi_set_continuous_states(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_real_t x[], size_t nx);
 
 /**
  * \brief Calls the FMI function fmiCompletedIntegratorStep(...) 
@@ -389,7 +389,7 @@ fmi2_status_t fmi2_capi_set_continuous_states(fmi2_capi_t* fmu, const fmi2_real_
  * @param terminateSimulation (Output) Terminate simulation indicator.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_completed_integrator_step(fmi2_capi_t* fmu,
+fmi2_status_t fmi2_capi_completed_integrator_step(const fmi2_capi_t* fmu, fmi2_component_t c,
     fmi2_boolean_t noSetFMUStatePriorToCurrentPoint,
     fmi2_boolean_t* enterEventMode, fmi2_boolean_t* terminateSimulation);
 
@@ -401,7 +401,7 @@ fmi2_status_t fmi2_capi_completed_integrator_step(fmi2_capi_t* fmu,
  * @param nx Number of derivatives.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_derivatives(fmi2_capi_t* fmu, fmi2_real_t derivatives[]    , size_t nx);
+fmi2_status_t fmi2_capi_get_derivatives(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t derivatives[]    , size_t nx);
 
 /**
  * \brief Calls the FMI function fmiGetEventIndicators(...) 
@@ -411,7 +411,7 @@ fmi2_status_t fmi2_capi_get_derivatives(fmi2_capi_t* fmu, fmi2_real_t derivative
  * @param ni Number of event indicators.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_event_indicators(fmi2_capi_t* fmu, fmi2_real_t eventIndicators[], size_t ni);
+fmi2_status_t fmi2_capi_get_event_indicators(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t eventIndicators[], size_t ni);
 
 /**
  * \brief Calls the FMI function fmiGetContinuousStates(...) 
@@ -421,7 +421,7 @@ fmi2_status_t fmi2_capi_get_event_indicators(fmi2_capi_t* fmu, fmi2_real_t event
  * @param nx Number of states.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_continuous_states(fmi2_capi_t* fmu, fmi2_real_t states[], size_t nx);
+fmi2_status_t fmi2_capi_get_continuous_states(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t states[], size_t nx);
 
 /**
  * \brief Calls the FMI function fmiGetNominalsOfContinuousStates(...) 
@@ -431,7 +431,7 @@ fmi2_status_t fmi2_capi_get_continuous_states(fmi2_capi_t* fmu, fmi2_real_t stat
  * @param nx Number of nominal values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_nominals_of_continuous_states(fmi2_capi_t* fmu, fmi2_real_t x_nominal[], size_t nx);
+fmi2_status_t fmi2_capi_get_nominals_of_continuous_states(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t x_nominal[], size_t nx);
 
 /**@} */
 
@@ -449,7 +449,7 @@ fmi2_status_t fmi2_capi_get_nominals_of_continuous_states(fmi2_capi_t* fmu, fmi2
  * @param value Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_set_real_input_derivatives(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]);                                                  
+fmi2_status_t fmi2_capi_set_real_input_derivatives(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]);                                                  
 
 /**
  * \brief Calls the FMI function fmiGetOutputDerivatives(...) 
@@ -461,7 +461,7 @@ fmi2_status_t fmi2_capi_set_real_input_derivatives(fmi2_capi_t* fmu, const fmi2_
  * @param value (Output) Array of variable values.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_real_output_derivatives(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]);                                              
+fmi2_status_t fmi2_capi_get_real_output_derivatives(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]);                                              
 
 /**
  * \brief Calls the FMI function fmiCancelStep(...) 
@@ -469,7 +469,7 @@ fmi2_status_t fmi2_capi_get_real_output_derivatives(fmi2_capi_t* fmu, const fmi2
  * @param fmu C-API struct that has succesfully loaded the FMI function.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_cancel_step(fmi2_capi_t* fmu);
+fmi2_status_t fmi2_capi_cancel_step(const fmi2_capi_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiDoStep(...) 
@@ -480,7 +480,7 @@ fmi2_status_t fmi2_capi_cancel_step(fmi2_capi_t* fmu);
  * @param newStep Indicates whether or not the last communication step was accepted by the master.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_do_step(fmi2_capi_t* fmu, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep);
+fmi2_status_t fmi2_capi_do_step(const fmi2_capi_t* fmu, fmi2_component_t, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep);
 
 /**
  * \brief Calls the FMI function fmiGetStatus(...) 
@@ -490,7 +490,7 @@ fmi2_status_t fmi2_capi_do_step(fmi2_capi_t* fmu, fmi2_real_t currentCommunicati
  * @param value (Output) FMI status value.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s, fmi2_status_t*  value);
+fmi2_status_t fmi2_capi_get_status(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_status_t*  value);
 
 /**
  * \brief Calls the FMI function fmiGetRealStatus(...) 
@@ -500,7 +500,7 @@ fmi2_status_t fmi2_capi_get_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s,
  * @param value (Output) FMI real value.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_real_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s, fmi2_real_t*    value);
+fmi2_status_t fmi2_capi_get_real_status(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_real_t*    value);
 
 /**
  * \brief Calls the FMI function fmiGetIntegerStatus(...) 
@@ -510,7 +510,7 @@ fmi2_status_t fmi2_capi_get_real_status(fmi2_capi_t* fmu, const fmi2_status_kind
  * @param value (Output) FMI integer value.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_integer_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s, fmi2_integer_t* value);
+fmi2_status_t fmi2_capi_get_integer_status(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_integer_t* value);
 
 /**
  * \brief Calls the FMI function fmiGetBooleanStatus(...) 
@@ -520,7 +520,7 @@ fmi2_status_t fmi2_capi_get_integer_status(fmi2_capi_t* fmu, const fmi2_status_k
  * @param value (Output) FMI boolean value.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_boolean_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s, fmi2_boolean_t* value);
+fmi2_status_t fmi2_capi_get_boolean_status(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_boolean_t* value);
 
 /**
  * \brief Calls the FMI function fmiGetStringStatus(...) 
@@ -530,7 +530,7 @@ fmi2_status_t fmi2_capi_get_boolean_status(fmi2_capi_t* fmu, const fmi2_status_k
  * @param value (Output) FMI string value.
  * @return FMI status.
  */
-fmi2_status_t fmi2_capi_get_string_status(fmi2_capi_t* fmu, const fmi2_status_kind_t s, fmi2_string_t*  value);
+fmi2_status_t fmi2_capi_get_string_status(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_string_t*  value);
 
 /** @}*/
 /** @}*/

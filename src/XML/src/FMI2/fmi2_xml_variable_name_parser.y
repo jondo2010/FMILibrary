@@ -30,6 +30,7 @@ int yydebug = 1;
 
 void yyfmi2error(yyscan_t* scanner, jm_callbacks* cb, char* name, char const *msg)
 {
+    (void)scanner;
 	jm_log_error(cb, MODULE, "Invalid structured ScalarVariable name \"%s\": %s", name, msg);
 }
 

@@ -21,8 +21,8 @@
 
 static char* MODULE="FMIXML";
 
-fmi_xml_context_t* fmi_xml_allocate_context( jm_callbacks* callbacks) {
-	jm_callbacks* cb;
+fmi_xml_context_t* fmi_xml_allocate_context(const jm_callbacks* callbacks) {
+	const jm_callbacks* cb;
 	fmi_xml_context_t* c;
 
 	jm_log_debug(callbacks, MODULE, "Allocating context for XML parsing module");
@@ -38,7 +38,7 @@ fmi_xml_context_t* fmi_xml_allocate_context( jm_callbacks* callbacks) {
 		jm_log_fatal(callbacks, MODULE, "Could not allocate memory");
 		return 0;
 	}
-	c->callbacks = callbacks;
+	c->callbacks = (jm_callbacks*)callbacks;
 	c->parser = 0;
 	c->fmi_version = fmi_version_unknown_enu;
     c->configuration = 0;
@@ -111,9 +111,14 @@ void XMLCALL fmi_xml_parse_element_start(void *c, const char *elm, const char **
 }
 
 void XMLCALL fmi_xml_parse_element_end(void* c, const char *elm) {
+    (void)c;
+    (void)elm;
 }
 
 void XMLCALL fmi_xml_parse_element_data(void* c, const XML_Char *s, int len) {
+    (void)c;
+    (void)s;
+    (void)len;
 }
 
 fmi_version_enu_t fmi_xml_get_fmi_version(fmi_xml_context_t* context, const char* filename) {

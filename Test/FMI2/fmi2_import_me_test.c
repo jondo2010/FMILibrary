@@ -29,12 +29,12 @@ void do_exit(int code)
 	exit(code);
 }
 
-void do_event_iteration(fmi2_import_t *fmu, fmi2_event_info_t *eventInfo)
+void do_event_iteration(fmi2_import_t *fmu, fmi2_component_t c, fmi2_event_info_t *eventInfo)
 {
     eventInfo->newDiscreteStatesNeeded = fmi2_true;
     eventInfo->terminateSimulation     = fmi2_false;
     while (eventInfo->newDiscreteStatesNeeded && !eventInfo->terminateSimulation) {
-        fmi2_import_new_discrete_states(fmu, eventInfo);
+        fmi2_import_new_discrete_states(fmu, c, eventInfo);
     }
 }
 
@@ -61,6 +61,7 @@ int test_simulate_me(fmi2_import_t* fmu)
 {	
 	fmi2_status_t fmistatus;
 	jm_status_enu_t jmstatus;
+        fmi2_component_t component;
 	fmi2_real_t tstart = 0.0;
 	fmi2_real_t tcur;
 	fmi2_real_t hcur;
@@ -96,21 +97,21 @@ int test_simulate_me(fmi2_import_t* fmu)
 	event_indicators = calloc(n_event_indicators, sizeof(double));
 	event_indicators_prev = calloc(n_event_indicators, sizeof(double));
 
-	jmstatus = fmi2_import_instantiate(fmu, "Test ME model instance",fmi2_model_exchange,0,0);
-	if (jmstatus == jm_status_error) {
+	component = fmi2_import_instantiate(fmu, "Test ME model instance",fmi2_model_exchange,0,0);
+	if (!component) {
 		printf("fmi2_import_instantiate failed\n");
 		do_exit(CTEST_RETURN_FAIL);
 	}
 
-	fmistatus = fmi2_import_set_debug_logging(fmu, fmi2_false,0,0);
+	fmistatus = fmi2_import_set_debug_logging(fmu, component, fmi2_false,0,0);
 	printf("fmi2_import_set_debug_logging:  %s\n", fmi2_status_to_string(fmistatus));	
-	fmi2_import_set_debug_logging(fmu, fmi2_true, 0, 0);
+	fmi2_import_set_debug_logging(fmu, component, fmi2_true, 0, 0);
 
-    fmistatus = fmi2_import_setup_experiment(fmu, toleranceControlled,
+    fmistatus = fmi2_import_setup_experiment(fmu, component, toleranceControlled,
         relativeTolerance, tstart, fmi2_false, 0.0);
 
-    fmistatus = fmi2_import_enter_initialization_mode(fmu);
-    fmistatus = fmi2_import_exit_initialization_mode(fmu);
+    fmistatus = fmi2_import_enter_initialization_mode(fmu, component);
+    fmistatus = fmi2_import_exit_initialization_mode(fmu, component);
 
 	tcur = tstart;
 	hcur = hdef;
@@ -124,25 +125,25 @@ int test_simulate_me(fmi2_import_t* fmu)
 	eventInfo.nextEventTime                     = -0.0;
 
     /* fmiExitInitializationMode leaves FMU in event mode */
-    do_event_iteration(fmu, &eventInfo);
-    fmi2_import_enter_continuous_time_mode(fmu);
+    do_event_iteration(fmu, component, &eventInfo);
+    fmi2_import_enter_continuous_time_mode(fmu, component);
 
-	fmistatus = fmi2_import_get_continuous_states(fmu, states, n_states);
-	fmistatus = fmi2_import_get_event_indicators(fmu, event_indicators, n_event_indicators);
+	fmistatus = fmi2_import_get_continuous_states(fmu, component, states, n_states);
+	fmistatus = fmi2_import_get_event_indicators(fmu, component, event_indicators, n_event_indicators);
 
 	while ((tcur < tend) && (!(eventInfo.terminateSimulation || terminateSimulation))) {
 		size_t k;
         fmi2_real_t tlast;
 		int zero_crossing_event = 0;
 
-		fmistatus = fmi2_import_set_time(fmu, tcur);
+		fmistatus = fmi2_import_set_time(fmu, component, tcur);
 
         { /* Swap event_indicators and event_indicators_prev so that we can get new indicators */
             fmi2_real_t *temp = event_indicators;
             event_indicators = event_indicators_prev;
             event_indicators_prev = temp;
         }
-		fmistatus = fmi2_import_get_event_indicators(fmu, event_indicators, n_event_indicators);
+		fmistatus = fmi2_import_get_event_indicators(fmu, component, event_indicators, n_event_indicators);
 
 		/* Check if an event indicator has triggered */
 		for (k = 0; k < n_event_indicators; k++) {
@@ -155,12 +156,12 @@ int test_simulate_me(fmi2_import_t* fmu)
 		/* Handle any events */
 		if (callEventUpdate || zero_crossing_event ||
 		  (eventInfo.nextEventTimeDefined && tcur == eventInfo.nextEventTime)) {
-            fmistatus = fmi2_import_enter_event_mode(fmu);
-            do_event_iteration(fmu, &eventInfo);
-            fmistatus = fmi2_import_enter_continuous_time_mode(fmu);
+            fmistatus = fmi2_import_enter_event_mode(fmu, component);
+            do_event_iteration(fmu, component, &eventInfo);
+            fmistatus = fmi2_import_enter_continuous_time_mode(fmu, component);
 
-			fmistatus = fmi2_import_get_continuous_states(fmu, states, n_states);
-			fmistatus = fmi2_import_get_event_indicators(fmu, event_indicators, n_event_indicators);
+			fmistatus = fmi2_import_get_continuous_states(fmu, component, states, n_states);
+			fmistatus = fmi2_import_get_event_indicators(fmu, component, event_indicators, n_event_indicators);
 		}
 
 		/* Calculate next time step */
@@ -176,16 +177,16 @@ int test_simulate_me(fmi2_import_t* fmu)
 		}
 
 		/* Integrate a step */
-		fmistatus = fmi2_import_get_derivatives(fmu, states_der, n_states);
+		fmistatus = fmi2_import_get_derivatives(fmu, component, states_der, n_states);
 		for (k = 0; k < n_states; k++) {
 			states[k] = states[k] + hcur*states_der[k];	
 			if (k == 0) printf("Ball height state[%u] = %f\n", (unsigned)k, states[k]);
 		}
 
 		/* Set states */
-		fmistatus = fmi2_import_set_continuous_states(fmu, states, n_states);
+		fmistatus = fmi2_import_set_continuous_states(fmu, component, states, n_states);
 		/* Step is complete */
-		fmistatus = fmi2_import_completed_integrator_step(fmu, fmi2_true, &callEventUpdate,
+		fmistatus = fmi2_import_completed_integrator_step(fmu, component, fmi2_true, &callEventUpdate,
                                                           &terminateSimulation);
 	}	
 
@@ -200,9 +201,9 @@ int test_simulate_me(fmi2_import_t* fmu)
 	}
 	
 
-	fmistatus = fmi2_import_terminate(fmu);
+	fmistatus = fmi2_import_terminate(fmu, component);
 
-	fmi2_import_free_instance(fmu);
+	fmi2_import_free_instance(fmu, component);
 
 	free(states);
 	free(states_der);

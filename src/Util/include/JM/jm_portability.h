@@ -84,7 +84,7 @@ char* jm_mktemp(char* tmplt);
 	\param len - of the buffer (if size is larger than FILENAME_MAX + 1 then the path will always fit in)
 	\return Pointer to outPath on success, 0 - on error in which case a message is send to the logger.	
 */
-char* jm_get_dir_abspath(jm_callbacks* cb, const char* dir, char* outPath, size_t len);
+char* jm_get_dir_abspath(const jm_callbacks* cb, const char* dir, char* outPath, size_t len);
 
 /** 
 	\brief Create a unique temporary directory
@@ -95,7 +95,7 @@ char* jm_get_dir_abspath(jm_callbacks* cb, const char* dir, char* outPath, size_
 	\return A pointer to the temporary directory name (absolute path, no terminating '/'). Caller is responsible for freeing the memory.
 		The function returns NULL if there were errors in which case a message is send to the logger.	
 */
-char* jm_mk_temp_dir(jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix);
+char* jm_mk_temp_dir(const jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix);
 
 /** 
 	\brief Create a file:// URL from absolute path
@@ -104,17 +104,17 @@ char* jm_mk_temp_dir(jm_callbacks* cb, const char* systemTempDir, const char* te
 	\return A pointer to the URL. Caller is responsible for freeing the memory.
 		The function returns NULL if there were errors in which case a message is send to the logger.	
 */
-char* jm_create_URL_from_abs_path(jm_callbacks* cb, const char* absPath);
+char* jm_create_URL_from_abs_path(const jm_callbacks* cb, const char* absPath);
 
 /**
 	\brief Make a directory.
 */
-jm_status_enu_t jm_mkdir(jm_callbacks* cb, const char* dir);
+jm_status_enu_t jm_mkdir(const jm_callbacks* cb, const char* dir);
 
 /**
 \brief Remove directory and all it contents.
 */
-jm_status_enu_t jm_rmdir(jm_callbacks* cb, const char* dir);
+jm_status_enu_t jm_rmdir(const jm_callbacks* cb, const char* dir);
 
 /**
 \brief C89 compatible implementation of C99 vsnprintf. 

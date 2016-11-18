@@ -407,6 +407,7 @@ fmiStatus fmi_get_event_indicators(fmiComponent c, fmiReal eventIndicators[], si
 
 fmiStatus fmi_event_update(fmiComponent c, fmiBoolean intermediateResults, fmiEventInfo* eventInfo)
 {
+    (void)intermediateResults;
 	component_ptr_t comp = (fmiComponent)c;
 	if (comp == NULL) {
 		return fmiFatal;
@@ -521,6 +522,7 @@ fmiStatus fmi_terminate_slave(fmiComponent c)
 
 fmiStatus fmi_reset_slave(fmiComponent c)
 {
+    (void)c;
 	return fmiOK;
 }
 
@@ -559,11 +561,13 @@ fmiStatus fmi_get_real_output_derivatives(fmiComponent c, const fmiValueReferenc
 
 fmiStatus fmi_cancel_step(fmiComponent c)
 {
+    (void)c;
 	return fmiOK;
 }
 
 fmiStatus fmi_do_step(fmiComponent c, fmiReal currentCommunicationPoint, fmiReal communicationStepSize, fmiBoolean newStep)
 {
+    (void)newStep;
 	component_ptr_t comp	= (fmiComponent)c;
 
 	if (comp == NULL) {
@@ -661,6 +665,7 @@ fmiStatus fmi_do_step(fmiComponent c, fmiReal currentCommunicationPoint, fmiReal
 
 fmiStatus fmi_get_status(fmiComponent c, const fmiStatusKind s, fmiStatus*  value)
 {
+    (void)c;
 	switch (s) {
 		case fmiDoStepStatus:
 			/* Return fmiPending if we are waiting. Otherwise the result from fmiDoStep */
@@ -673,6 +678,7 @@ fmiStatus fmi_get_status(fmiComponent c, const fmiStatusKind s, fmiStatus*  valu
 
 fmiStatus fmi_get_real_status(fmiComponent c, const fmiStatusKind s, fmiReal*    value)
 {
+    (void)c;
 	switch (s) {
 		case fmiLastSuccessfulTime:
 			/* Return fmiPending if we are waiting. Otherwise return end time for last call to fmiDoStep */
@@ -685,6 +691,8 @@ fmiStatus fmi_get_real_status(fmiComponent c, const fmiStatusKind s, fmiReal*   
 
 fmiStatus fmi_get_integer_status(fmiComponent c, const fmiStatusKind s, fmiInteger* value)
 {
+    (void)c;
+    (void)value;
 	switch (s) {
 		default: /* Not defined for status for this function */
 			return fmiDiscard;
@@ -693,6 +701,8 @@ fmiStatus fmi_get_integer_status(fmiComponent c, const fmiStatusKind s, fmiInteg
 
 fmiStatus fmi_get_boolean_status(fmiComponent c, const fmiStatusKind s, fmiBoolean* value)
 {
+    (void)c;
+    (void)value;
 	switch (s) {
 		default: /* Not defined for status for this function */
 			return fmiDiscard;
@@ -701,6 +711,7 @@ fmiStatus fmi_get_boolean_status(fmiComponent c, const fmiStatusKind s, fmiBoole
 
 fmiStatus fmi_get_string_status(fmiComponent c, const fmiStatusKind s, fmiString*  value)
 {
+    (void)c;
 	switch (s) {
 		case fmiPendingStatus:
 			*value = "Did fmiDoStep really return with fmiPending? Then its time to implement this function";

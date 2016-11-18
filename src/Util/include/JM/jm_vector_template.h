@@ -106,7 +106,7 @@ size_t jm_vector_reserve(JM_TEMPLATE_INSTANCE_TYPE)(jm_vector(JM_TEMPLATE_INSTAN
         return a->capacity;
 }
 
-size_t jm_vector_copy(JM_TEMPLATE_INSTANCE_TYPE)(jm_vector(JM_TEMPLATE_INSTANCE_TYPE)* destination, jm_vector(JM_TEMPLATE_INSTANCE_TYPE)* source) {
+size_t jm_vector_copy(JM_TEMPLATE_INSTANCE_TYPE)(jm_vector(JM_TEMPLATE_INSTANCE_TYPE)* destination, const jm_vector(JM_TEMPLATE_INSTANCE_TYPE)* source) {
         size_t destsize = jm_vector_resize(JM_TEMPLATE_INSTANCE_TYPE)(destination, source->size);
         if(destsize > 0) {
             memcpy((void*)destination->items, (void*)source->items, sizeof(JM_TEMPLATE_INSTANCE_TYPE)*destsize);

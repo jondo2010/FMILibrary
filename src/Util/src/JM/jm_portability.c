@@ -98,7 +98,7 @@ char* jm_portability_get_last_dll_error(void)
 jm_status_enu_t jm_portability_get_current_working_directory(char* buffer, size_t len)
 {
 	int ilen = (int)len;
-	if(ilen != len) ilen = FILENAME_MAX + 2;
+	if((size_t)ilen != len) ilen = FILENAME_MAX + 2;
 	setlocale(LC_CTYPE, "en_US.UTF-8"); /* just in case, does not seem to have an effect */
 	if (get_current_working_directory(buffer, ilen) == NULL) {
 		return jm_status_error;
@@ -150,7 +150,7 @@ char* jm_mktemp(char* tmplt) {
 #define MKDIR(dir) mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)
 #endif
 
-jm_status_enu_t jm_mkdir(jm_callbacks* cb, const char* dir) {
+jm_status_enu_t jm_mkdir(const jm_callbacks* cb, const char* dir) {
 	if(!cb) {
 		cb = jm_get_default_callbacks();
 	}
@@ -163,7 +163,7 @@ jm_status_enu_t jm_mkdir(jm_callbacks* cb, const char* dir) {
 }
 
 
-jm_status_enu_t jm_rmdir(jm_callbacks* cb, const char* dir) {
+jm_status_enu_t jm_rmdir(const jm_callbacks* cb, const char* dir) {
 #ifdef WIN32
 	const char* fmt_cmd = "rmdir /s /q %s";
 #else
@@ -196,7 +196,7 @@ jm_status_enu_t jm_rmdir(jm_callbacks* cb, const char* dir) {
 	return jm_status_success;
 }
 
-char* jm_get_dir_abspath(jm_callbacks* cb, const char* dir, char* outPath, size_t len) {
+char* jm_get_dir_abspath(const jm_callbacks* cb, const char* dir, char* outPath, size_t len) {
 	char curDir[FILENAME_MAX + 2];
 
 	if(!cb) {
@@ -222,7 +222,7 @@ char* jm_get_dir_abspath(jm_callbacks* cb, const char* dir, char* outPath, size_
 }
 
 
-char* jm_mk_temp_dir(jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix)
+char* jm_mk_temp_dir(const jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix)
 {
 	size_t len;
 
@@ -275,7 +275,7 @@ char* jm_mk_temp_dir(jm_callbacks* cb, const char* systemTempDir, const char* te
 	return tmpPath;
 }
 
-char* jm_create_URL_from_abs_path(jm_callbacks* cb, const char* path) {
+char* jm_create_URL_from_abs_path(const jm_callbacks* cb, const char* path) {
 	/* worst case: all symbols are 4-byte UTF-8 and need to be %-encoded */
 #define MAX_URL_LENGTH  (FILENAME_MAX * 4 * 3 + 7)
 	char buffer[MAX_URL_LENGTH];

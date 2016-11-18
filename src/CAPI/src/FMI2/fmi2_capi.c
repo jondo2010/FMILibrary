@@ -60,6 +60,7 @@ static void fmi2_capi_get_fcn_with_flag(fmi2_capi_t* fmu, const char* function_n
 
 static jm_status_enu_t fmi2_capi_load_common_fcn(fmi2_capi_t* fmu, unsigned int capabilities[])
 {
+    (void)capabilities;
 	jm_status_enu_t jm_status = jm_status_success;
 	/***************************************************
 Types for Common Functions
@@ -382,105 +383,104 @@ const char* fmi2_capi_get_types_platform(fmi2_capi_t* fmu)
 	return fmu->fmi2GetTypesPlatform();
 }
 
-fmi2_status_t fmi2_capi_set_debug_logging(fmi2_capi_t* fmu, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[])
+fmi2_status_t fmi2_capi_set_debug_logging(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[])
 {
-	return fmu->fmi2SetDebugLogging(fmu->c, loggingOn, nCategories, categories);
+	return fmu->fmi2SetDebugLogging(c, loggingOn, nCategories, categories);
 }
 
-fmi2_component_t fmi2_capi_instantiate(fmi2_capi_t* fmu,
+fmi2_component_t fmi2_capi_instantiate(const fmi2_capi_t* fmu,
   fmi2_string_t instanceName, fmi2_type_t fmuType, fmi2_string_t fmuGUID,
   fmi2_string_t fmuResourceLocation, fmi2_boolean_t visible,
   fmi2_boolean_t loggingOn)
 {
-    return fmu->c = fmu->fmi2Instantiate(instanceName, fmuType, fmuGUID,
+    return fmu->fmi2Instantiate(instanceName, fmuType, fmuGUID,
         fmuResourceLocation, &fmu->callBackFunctions, visible, loggingOn);
 }
 
-void fmi2_capi_free_instance(fmi2_capi_t* fmu)
+void fmi2_capi_free_instance(const fmi2_capi_t* fmu, fmi2_component_t c)
 {
-    if(fmu != NULL && fmu->c != NULL) {
-        fmu->fmi2FreeInstance(fmu->c);
-        fmu->c = 0;
+    if(fmu != NULL && c != NULL) {
+        fmu->fmi2FreeInstance(c);
     }
 }
 
 
-fmi2_status_t fmi2_capi_setup_experiment(fmi2_capi_t* fmu,
-    fmi2_boolean_t tolerance_defined, fmi2_real_t tolerance,
-    fmi2_real_t start_time, fmi2_boolean_t stop_time_defined,
-    fmi2_real_t stop_time)
+fmi2_status_t fmi2_capi_setup_experiment(const fmi2_capi_t* fmu, fmi2_component_t c,
+    const fmi2_boolean_t tolerance_defined, const fmi2_real_t tolerance,
+    const fmi2_real_t start_time, const fmi2_boolean_t stop_time_defined,
+    const fmi2_real_t stop_time)
 {
-    assert(fmu); assert(fmu->c);
+    assert(fmu); assert(c);
     jm_log_verbose(fmu->callbacks, FMI_CAPI_MODULE_NAME, "Calling fmi2SetupExperiment");
-    return fmu->fmi2SetupExperiment(fmu->c, tolerance_defined, tolerance,
+    return fmu->fmi2SetupExperiment(c, tolerance_defined, tolerance,
                                    start_time, stop_time_defined, stop_time);
 }
 
-fmi2_status_t fmi2_capi_enter_initialization_mode(fmi2_capi_t* fmu)
+fmi2_status_t fmi2_capi_enter_initialization_mode(const fmi2_capi_t* fmu, fmi2_component_t c)
 {
-    assert(fmu); assert(fmu->c);
+    assert(fmu); assert(c);
     jm_log_verbose(fmu->callbacks, FMI_CAPI_MODULE_NAME, "Calling fmi2EnterInitializationMode");
-    return fmu->fmi2EnterInitializationMode(fmu->c);
+    return fmu->fmi2EnterInitializationMode(c);
 }
 
-fmi2_status_t fmi2_capi_exit_initialization_mode(fmi2_capi_t* fmu)
+fmi2_status_t fmi2_capi_exit_initialization_mode(const fmi2_capi_t* fmu, fmi2_component_t c)
 {
-    assert(fmu); assert(fmu->c);
+    assert(fmu); assert(c);
     jm_log_verbose(fmu->callbacks, FMI_CAPI_MODULE_NAME, "Calling fmi2ExitInitializationMode");
-    return fmu->fmi2ExitInitializationMode(fmu->c);
+    return fmu->fmi2ExitInitializationMode(c);
 }
 
 
-fmi2_status_t fmi2_capi_terminate(fmi2_capi_t* fmu)
+fmi2_status_t fmi2_capi_terminate(const fmi2_capi_t* fmu, fmi2_component_t c)
 {
 	assert(fmu);
 	jm_log_debug(fmu->callbacks, FMI_CAPI_MODULE_NAME, "Calling fmi2Terminate");
-	return fmu->fmi2Terminate(fmu->c);
+	return fmu->fmi2Terminate(c);
 }
 
-fmi2_status_t fmi2_capi_reset(fmi2_capi_t* fmu)
+fmi2_status_t fmi2_capi_reset(const fmi2_capi_t* fmu, fmi2_component_t c)
 {
-	return fmu->fmi2Reset(fmu->c);
+	return fmu->fmi2Reset(c);
 }
 
-fmi2_status_t fmi2_capi_get_fmu_state           (fmi2_capi_t* fmu, fmi2_FMU_state_t* s) {
-	return fmu->fmi2GetFMUstate(fmu -> c,s);
+fmi2_status_t fmi2_capi_get_fmu_state           (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s) {
+	return fmu->fmi2GetFMUstate(c,s);
 }
-fmi2_status_t fmi2_capi_set_fmu_state           (fmi2_capi_t* fmu, fmi2_FMU_state_t s){
-	return fmu->fmi2SetFMUstate(fmu -> c,s);
+fmi2_status_t fmi2_capi_set_fmu_state           (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s){
+	return fmu->fmi2SetFMUstate(c,s);
 }
-fmi2_status_t fmi2_capi_free_fmu_state          (fmi2_capi_t* fmu, fmi2_FMU_state_t* s){
-	return fmu->fmi2FreeFMUstate (fmu -> c,s);
+fmi2_status_t fmi2_capi_free_fmu_state          (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s){
+	return fmu->fmi2FreeFMUstate (c,s);
 }
-fmi2_status_t fmi2_capi_serialized_fmu_state_size(fmi2_capi_t* fmu, fmi2_FMU_state_t s, size_t* sz){
-	return fmu->fmi2SerializedFMUstateSize(fmu -> c,s,sz);
+fmi2_status_t fmi2_capi_serialized_fmu_state_size(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s, size_t* sz){
+	return fmu->fmi2SerializedFMUstateSize(c,s,sz);
 }
-fmi2_status_t fmi2_capi_serialize_fmu_state     (fmi2_capi_t* fmu, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz){
-	return fmu->fmi2SerializeFMUstate(fmu -> c,s,data,sz);
+fmi2_status_t fmi2_capi_serialize_fmu_state     (const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz){
+	return fmu->fmi2SerializeFMUstate(c,s,data,sz);
 }
-fmi2_status_t fmi2_capi_de_serialize_fmu_state  (fmi2_capi_t* fmu, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s){
-	return fmu->fmi2DeSerializeFMUstate (fmu -> c,data,sz,s);
+fmi2_status_t fmi2_capi_de_serialize_fmu_state  (const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s){
+	return fmu->fmi2DeSerializeFMUstate (c,data,sz,s);
 }
 
-fmi2_status_t fmi2_capi_get_directional_derivative(fmi2_capi_t* fmu, const fmi2_value_reference_t v_ref[], size_t nv,
+fmi2_status_t fmi2_capi_get_directional_derivative(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t v_ref[], size_t nv,
                                                                    const fmi2_value_reference_t z_ref[], size_t nz,
                                                                    const fmi2_real_t dv[], fmi2_real_t dz[]){
-	return fmu->fmi2GetDirectionalDerivative(fmu -> c, z_ref, nz, v_ref, nv, dv, dz);
+	return fmu->fmi2GetDirectionalDerivative(c, z_ref, nz, v_ref, nv, dv, dz);
 }
 
 
 /* fmiSet* functions */
 #define FMISETX(FNAME1, FNAME2, FTYPE) \
-fmi2_status_t FNAME1(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const FTYPE value[])	\
+fmi2_status_t FNAME1(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const FTYPE value[])	\
 { \
-	return fmu->FNAME2(fmu->c, vr, nvr, value); \
+	return fmu->FNAME2(c, vr, nvr, value); \
 }
 
 /* fmiGet* functions */
 #define FMIGETX(FNAME1, FNAME2, FTYPE) \
-fmi2_status_t FNAME1(fmi2_capi_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, FTYPE value[]) \
+fmi2_status_t FNAME1(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, FTYPE value[]) \
 { \
-	return fmu->FNAME2(fmu->c, vr, nvr, value); \
+	return fmu->FNAME2(c, vr, nvr, value); \
 }
 
 FMISETX(fmi2_capi_set_real,		fmi2SetReal,		fmi2_real_t)

@@ -534,6 +534,8 @@ int fmi2_xml_handle_CoSimulation(fmi2_xml_parser_context_t *context, const char*
 }
 
 int fmi2_xml_handle_SourceFiles(fmi2_xml_parser_context_t *context, const char* data) {
+    (void)context;
+    (void)data;
     return 0;
 }
 
@@ -575,6 +577,8 @@ int fmi2_xml_handle_File(fmi2_xml_parser_context_t *context, const char* data) {
 }
 
 int fmi2_xml_handle_SourceFilesCS(fmi2_xml_parser_context_t *context, const char* data) {
+    (void)context;
+    (void)data;
     return 0;
 }
 

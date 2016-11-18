@@ -316,7 +316,7 @@ int fmi1_xml_handle_ScalarVariable(fmi1_xml_parser_context_t *context, const cha
             /*   <xs:attribute name="valueReference" type="xs:unsignedInt" use="required"> */
             if(fmi1_xml_set_attr_uint(context, fmi1_xml_elmID_ScalarVariable, fmi_attr_id_valueReference, 1, &vr, 0)) return -1;
 
-            if(vr == fmi1_undefined_value_reference) {
+            if((int)vr == fmi1_undefined_value_reference) {
                 context->skipOneVariableFlag = 1;
             }
 
@@ -886,7 +886,7 @@ int fmi1_xml_handle_ModelVariables(fmi1_xml_parser_context_t *context, const cha
         for(i = 0; i< numvar; i++) {
             jm_named_ptr named = jm_vector_get_item(jm_named_ptr)(&md->variablesByName, i);
             fmi1_xml_variable_t* v = named.ptr;
-            if(v->vr == fmi1_undefined_value_reference) {
+            if((int)v->vr == fmi1_undefined_value_reference) {
                 jm_vector_remove_item(jm_named_ptr)(&md->variablesByName,i);
                 numvar--; i--;
                 fmi1_xml_free_direct_dependencies(named);

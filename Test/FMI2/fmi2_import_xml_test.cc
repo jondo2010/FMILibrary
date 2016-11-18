@@ -65,7 +65,7 @@ void do_exit(int code)
 	exit(code);
 }
 
-void mylogger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message)
+void mylogger(const jm_callbacks* c, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message)
 {
     printf("[%s][%s] %s\n", module, jm_log_level_to_string(log_level), message);
     if (!expect_error && log_level == jm_log_level_error) {

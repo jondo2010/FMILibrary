@@ -1648,6 +1648,7 @@ YY_BUFFER_STATE yyfmi2_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_
 
 static void yy_fatal_error (yyconst char* msg , yyscan_t yyscanner)
 {
+    (void)yyscanner;
     	(void) fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
@@ -1980,11 +1981,13 @@ static int yy_flex_strlen (yyconst char * s , yyscan_t yyscanner)
 
 void *yyfmi2alloc (yy_size_t  size , yyscan_t yyscanner)
 {
+    (void)yyscanner;
 	return (void *) malloc( size );
 }
 
 void *yyfmi2realloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 {
+    (void)yyscanner;
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
 	 * that use void* generic pointers.  It works with the latter
@@ -1997,6 +2000,7 @@ void *yyfmi2realloc  (void * ptr, yy_size_t  size , yyscan_t yyscanner)
 
 void yyfmi2free (void * ptr , yyscan_t yyscanner)
 {
+    (void)yyscanner;
 	free( (char *) ptr );	/* see yyfmi2realloc() for (char *) cast */
 }
 

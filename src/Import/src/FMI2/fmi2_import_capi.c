@@ -172,211 +172,206 @@ const char* fmi2_import_get_version(fmi2_import_t* fmu) {
 	return fmi2_capi_get_version(fmu -> capi);
 }
 
-fmi2_status_t fmi2_import_set_debug_logging(fmi2_import_t* fmu, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]) {
+fmi2_status_t fmi2_import_set_debug_logging(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]) {
 	if(!fmu->capi) {
 		jm_log_error(fmu->callbacks, module,"FMU CAPI is not loaded");
 		return fmi2_status_fatal;
 	}
-	return fmi2_capi_set_debug_logging(fmu -> capi, loggingOn, nCategories, categories);
+	return fmi2_capi_set_debug_logging(fmu -> capi, c, loggingOn, nCategories, categories);
 }
 
 
-jm_status_enu_t fmi2_import_instantiate(fmi2_import_t* fmu,
-  fmi2_string_t instanceName, fmi2_type_t fmuType,
-  fmi2_string_t fmuResourceLocation, fmi2_boolean_t visible) {
+fmi2_component_t fmi2_import_instantiate(const fmi2_import_t* fmu,
+  const fmi2_string_t instanceName, const fmi2_type_t fmuType,
+  fmi2_string_t fmuResourceLocation, const fmi2_boolean_t visible) {
     fmi2_string_t fmuGUID = fmi2_import_get_GUID(fmu);
     fmi2_boolean_t loggingOn = (fmu->callbacks->log_level > jm_log_level_nothing);
-    fmi2_component_t c;
+
     if(!fmuResourceLocation) 
         fmuResourceLocation = fmu->resourceLocation;
-    c = fmi2_capi_instantiate(fmu -> capi, instanceName, fmuType, fmuGUID,
-                              fmuResourceLocation, visible, loggingOn);
-    if (c == NULL) {
-        return jm_status_error;
-    } else {
-        return jm_status_success;
-    }
+    return fmi2_capi_instantiate(fmu -> capi, instanceName, fmuType, fmuGUID,
+                                 fmuResourceLocation, visible, loggingOn);
 }
 
-void fmi2_import_free_instance(fmi2_import_t* fmu) {
+void fmi2_import_free_instance(const fmi2_import_t* fmu, fmi2_component_t c) {
     if (fmu != NULL) {
-        fmi2_capi_free_instance(fmu -> capi);
+        fmu->capi->fmi2FreeInstance(c);
     }
 }
 
-fmi2_status_t fmi2_import_setup_experiment(fmi2_import_t* fmu,
-    fmi2_boolean_t tolerance_defined, fmi2_real_t tolerance,
-    fmi2_real_t start_time, fmi2_boolean_t stop_time_defined,
-    fmi2_real_t stop_time)
+fmi2_status_t fmi2_import_setup_experiment(const fmi2_import_t* fmu, fmi2_component_t c,
+    const fmi2_boolean_t tolerance_defined, const fmi2_real_t tolerance,
+    const fmi2_real_t start_time, const fmi2_boolean_t stop_time_defined,
+    const fmi2_real_t stop_time)
 {
     assert(fmu);
-    return fmi2_capi_setup_experiment(fmu->capi, tolerance_defined, tolerance,
+    return fmi2_capi_setup_experiment(fmu->capi, c, tolerance_defined, tolerance,
                                       start_time, stop_time_defined, stop_time);
 }
 
-fmi2_status_t fmi2_import_enter_initialization_mode(fmi2_import_t* fmu)
+fmi2_status_t fmi2_import_enter_initialization_mode(const fmi2_import_t* fmu, fmi2_component_t c)
 {
     assert(fmu);
-    return fmi2_capi_enter_initialization_mode(fmu->capi);
+    return fmi2_capi_enter_initialization_mode(fmu->capi, c);
 }
 
-fmi2_status_t fmi2_import_exit_initialization_mode(fmi2_import_t* fmu)
+fmi2_status_t fmi2_import_exit_initialization_mode(const fmi2_import_t* fmu, fmi2_component_t c)
 {
     assert(fmu);
-    return fmi2_capi_exit_initialization_mode(fmu->capi);
+    return fmi2_capi_exit_initialization_mode(fmu->capi, c);
 }
 
-fmi2_status_t fmi2_import_terminate(fmi2_import_t* fmu) {
-	return fmi2_capi_terminate(fmu -> capi);
+fmi2_status_t fmi2_import_terminate(const fmi2_import_t* fmu, fmi2_component_t c) {
+	return fmi2_capi_terminate(fmu -> capi, c);
 }
 
-fmi2_status_t fmi2_import_reset(fmi2_import_t* fmu) {
-	return fmi2_capi_reset(fmu -> capi);
+fmi2_status_t fmi2_import_reset(const fmi2_import_t* fmu, fmi2_component_t c) {
+	return fmi2_capi_reset(fmu -> capi, c);
 }
 
 
-fmi2_status_t fmi2_import_set_real(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]) {
-	return fmi2_capi_set_real(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_set_real(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]) {
+	return fmi2_capi_set_real(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_set_integer(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]) {
-	return fmi2_capi_set_integer(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_set_integer(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]) {
+	return fmi2_capi_set_integer(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_set_boolean(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]) {
-	return fmi2_capi_set_boolean(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_set_boolean(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]) {
+	return fmi2_capi_set_boolean(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_set_string(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]) {
-	return fmi2_capi_set_string(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_set_string(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]) {
+	return fmi2_capi_set_string(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_get_real(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]) {
-	return fmi2_capi_get_real(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_get_real(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]) {
+	return fmi2_capi_get_real(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_get_integer(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]) {
-	return fmi2_capi_get_integer(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_get_integer(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]) {
+	return fmi2_capi_get_integer(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_get_boolean(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]) {
-	return fmi2_capi_get_boolean(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_get_boolean(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]) {
+	return fmi2_capi_get_boolean(fmu -> capi, c, vr, nvr, value);
 }
 
-fmi2_status_t fmi2_import_get_string(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]) {
-	return fmi2_capi_get_string(fmu -> capi, vr, nvr, value);
+fmi2_status_t fmi2_import_get_string(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]) {
+	return fmi2_capi_get_string(fmu -> capi, c, vr, nvr, value);
 }
 
-const char* fmi2_import_get_types_platform(fmi2_import_t* fmu) {
+const char* fmi2_import_get_types_platform(const fmi2_import_t* fmu) {
 	return fmi2_capi_get_types_platform(fmu -> capi);
 }
 
-fmi2_status_t fmi2_import_get_fmu_state           (fmi2_import_t* fmu, fmi2_FMU_state_t* s) {
-	return fmi2_capi_get_fmu_state(fmu -> capi,s);
+fmi2_status_t fmi2_import_get_fmu_state           (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s) {
+	return fmi2_capi_get_fmu_state(fmu -> capi, c, s);
 }
-fmi2_status_t fmi2_import_set_fmu_state           (fmi2_import_t* fmu, fmi2_FMU_state_t s){
-	return fmi2_capi_set_fmu_state(fmu -> capi,s);
+fmi2_status_t fmi2_import_set_fmu_state           (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s){
+	return fmi2_capi_set_fmu_state(fmu -> capi, c, s);
 }
-fmi2_status_t fmi2_import_free_fmu_state          (fmi2_import_t* fmu, fmi2_FMU_state_t* s){
-	return fmi2_capi_free_fmu_state (fmu -> capi,s);
+fmi2_status_t fmi2_import_free_fmu_state          (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s){
+	return fmi2_capi_free_fmu_state (fmu -> capi, c, s);
 }
-fmi2_status_t fmi2_import_serialized_fmu_state_size(fmi2_import_t* fmu, fmi2_FMU_state_t s, size_t* sz){
-	return fmi2_capi_serialized_fmu_state_size(fmu -> capi,s,sz);
+fmi2_status_t fmi2_import_serialized_fmu_state_size(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s, size_t* sz){
+	return fmi2_capi_serialized_fmu_state_size(fmu -> capi, c, s,sz);
 }
-fmi2_status_t fmi2_import_serialize_fmu_state     (fmi2_import_t* fmu, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz){
-	return fmi2_capi_serialize_fmu_state(fmu -> capi,s,data,sz);
+fmi2_status_t fmi2_import_serialize_fmu_state     (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s , fmi2_byte_t data[], size_t sz){
+	return fmi2_capi_serialize_fmu_state(fmu -> capi,c,s,data,sz);
 }
-fmi2_status_t fmi2_import_de_serialize_fmu_state  (fmi2_import_t* fmu, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s){
-	return fmi2_capi_de_serialize_fmu_state (fmu -> capi,data,sz,s);
+fmi2_status_t fmi2_import_de_serialize_fmu_state  (const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s){
+	return fmi2_capi_de_serialize_fmu_state (fmu -> capi,c,data,sz,s);
 }
 
-fmi2_status_t fmi2_import_get_directional_derivative(fmi2_import_t* fmu, const fmi2_value_reference_t v_ref[], size_t nv,
+fmi2_status_t fmi2_import_get_directional_derivative(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t v_ref[], size_t nv,
                                                                    const fmi2_value_reference_t z_ref[], size_t nz,
                                                                    const fmi2_real_t dv[], fmi2_real_t dz[]){
-	return fmi2_capi_get_directional_derivative(fmu -> capi,v_ref, nv, z_ref, nz, dv, dz);
+	return fmi2_capi_get_directional_derivative(fmu -> capi, c, v_ref, nv, z_ref, nz, dv, dz);
 }
 
 /* FMI 2.0 ME functions */
 
-fmi2_status_t fmi2_import_enter_event_mode(fmi2_import_t* fmu) {
-    return fmi2_capi_enter_event_mode(fmu->capi);
+fmi2_status_t fmi2_import_enter_event_mode(const fmi2_import_t* fmu, fmi2_component_t c) {
+    return fmi2_capi_enter_event_mode(fmu->capi, c);
 }
 
-fmi2_status_t fmi2_import_new_discrete_states(fmi2_import_t* fmu, fmi2_event_info_t* eventInfo) {
-    return fmi2_capi_new_discrete_states(fmu->capi, eventInfo);
+fmi2_status_t fmi2_import_new_discrete_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_event_info_t* eventInfo) {
+    return fmi2_capi_new_discrete_states(fmu->capi, c, eventInfo);
 }
 
-fmi2_status_t fmi2_import_enter_continuous_time_mode(fmi2_import_t* fmu) {
-    return fmi2_capi_enter_continuous_time_mode(fmu->capi);
+fmi2_status_t fmi2_import_enter_continuous_time_mode(const fmi2_import_t* fmu, fmi2_component_t c) {
+    return fmi2_capi_enter_continuous_time_mode(fmu->capi, c);
 }
 
-fmi2_status_t fmi2_import_set_time(fmi2_import_t* fmu, fmi2_real_t time) {
-	return fmi2_capi_set_time(fmu -> capi, time);
+fmi2_status_t fmi2_import_set_time(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_real_t time) {
+	return fmi2_capi_set_time(fmu -> capi, c, time);
 }
 
-fmi2_status_t fmi2_import_set_continuous_states(fmi2_import_t* fmu, const fmi2_real_t x[], size_t nx) {
-	return fmi2_capi_set_continuous_states(fmu -> capi, x, nx);
+fmi2_status_t fmi2_import_set_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_real_t x[], size_t nx) {
+	return fmi2_capi_set_continuous_states(fmu -> capi, c, x, nx);
 }
 
-fmi2_status_t fmi2_import_completed_integrator_step(fmi2_import_t* fmu,
+fmi2_status_t fmi2_import_completed_integrator_step(const fmi2_import_t* fmu, fmi2_component_t c,
   fmi2_boolean_t noSetFMUStatePriorToCurrentPoint,
   fmi2_boolean_t* enterEventMode, fmi2_boolean_t* terminateSimulation) {
-    return fmi2_capi_completed_integrator_step(fmu -> capi, noSetFMUStatePriorToCurrentPoint,
+    return fmi2_capi_completed_integrator_step(fmu -> capi, c, noSetFMUStatePriorToCurrentPoint,
                                                enterEventMode, terminateSimulation);
 }
 
-fmi2_status_t fmi2_import_get_derivatives(fmi2_import_t* fmu, fmi2_real_t derivatives[], size_t nx) {
-	return fmi2_capi_get_derivatives(fmu -> capi, derivatives, nx);
+fmi2_status_t fmi2_import_get_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t derivatives[], size_t nx) {
+	return fmi2_capi_get_derivatives(fmu -> capi, c, derivatives, nx);
 }
 
-fmi2_status_t fmi2_import_get_event_indicators(fmi2_import_t* fmu, fmi2_real_t eventIndicators[], size_t ni) {
-	return fmi2_capi_get_event_indicators(fmu -> capi, eventIndicators, ni);
+fmi2_status_t fmi2_import_get_event_indicators(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t eventIndicators[], size_t ni) {
+	return fmi2_capi_get_event_indicators(fmu -> capi, c, eventIndicators, ni);
 }
 
-fmi2_status_t fmi2_import_get_continuous_states(fmi2_import_t* fmu, fmi2_real_t states[], size_t nx) {
-	return fmi2_capi_get_continuous_states(fmu -> capi, states, nx);
+fmi2_status_t fmi2_import_get_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t states[], size_t nx) {
+	return fmi2_capi_get_continuous_states(fmu -> capi, c, states, nx);
 }
 
-fmi2_status_t fmi2_import_get_nominals_of_continuous_states(fmi2_import_t* fmu, fmi2_real_t x_nominal[], size_t nx) {
-	return fmi2_capi_get_nominals_of_continuous_states(fmu -> capi, x_nominal, nx);
+fmi2_status_t fmi2_import_get_nominals_of_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t x_nominal[], size_t nx) {
+	return fmi2_capi_get_nominals_of_continuous_states(fmu -> capi, c, x_nominal, nx);
 }
 
 /* FMI 2.0 CS functions */
 
-fmi2_status_t fmi2_import_set_real_input_derivatives(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]) {
-	return fmi2_capi_set_real_input_derivatives(fmu -> capi, vr, nvr, order, value);
+fmi2_status_t fmi2_import_set_real_input_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]) {
+	return fmi2_capi_set_real_input_derivatives(fmu -> capi, c, vr, nvr, order, value);
 }
                                                   
-fmi2_status_t fmi2_import_get_real_output_derivatives(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]) {
-	return fmi2_capi_get_real_output_derivatives(fmu -> capi, vr, nvr, order, value);
+fmi2_status_t fmi2_import_get_real_output_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]) {
+	return fmi2_capi_get_real_output_derivatives(fmu -> capi, c, vr, nvr, order, value);
 }
                                               
-fmi2_status_t fmi2_import_cancel_step(fmi2_import_t* fmu) {
-	return fmi2_capi_cancel_step(fmu -> capi);
+fmi2_status_t fmi2_import_cancel_step(const fmi2_import_t* fmu, fmi2_component_t c) {
+	return fmi2_capi_cancel_step(fmu -> capi, c);
 }
 
-fmi2_status_t fmi2_import_do_step(fmi2_import_t* fmu, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep) {
-	return fmi2_capi_do_step(fmu -> capi, currentCommunicationPoint, communicationStepSize, newStep);
+fmi2_status_t fmi2_import_do_step(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep) {
+	return fmi2_capi_do_step(fmu -> capi, c, currentCommunicationPoint, communicationStepSize, newStep);
 }
 
-fmi2_status_t fmi2_import_get_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_status_t*  value) {
-	return fmi2_capi_get_status(fmu -> capi, s, value);
+fmi2_status_t fmi2_import_get_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_status_t*  value) {
+	return fmi2_capi_get_status(fmu -> capi, c, s, value);
 }
 
-fmi2_status_t fmi2_import_get_real_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_real_t*    value) {
-	return fmi2_capi_get_real_status(fmu -> capi, s, value);
+fmi2_status_t fmi2_import_get_real_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_real_t*    value) {
+	return fmi2_capi_get_real_status(fmu -> capi, c, s, value);
 }
 
-fmi2_status_t fmi2_import_get_integer_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_integer_t* value) {
-	return fmi2_capi_get_integer_status(fmu -> capi, s, value);
+fmi2_status_t fmi2_import_get_integer_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_integer_t* value) {
+	return fmi2_capi_get_integer_status(fmu -> capi, c,  s, value);
 }
 
-fmi2_status_t fmi2_import_get_boolean_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_boolean_t* value) {
-	return fmi2_capi_get_boolean_status(fmu -> capi, s, value);
+fmi2_status_t fmi2_import_get_boolean_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_boolean_t* value) {
+	return fmi2_capi_get_boolean_status(fmu -> capi, c, s, value);
 }
 
-fmi2_status_t fmi2_import_get_string_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_string_t*  value) {
-	return fmi2_capi_get_string_status(fmu -> capi, s, value);
+fmi2_status_t fmi2_import_get_string_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_string_t*  value) {
+	return fmi2_capi_get_string_status(fmu -> capi, c, s, value);
 }
 
 #ifdef __cplusplus

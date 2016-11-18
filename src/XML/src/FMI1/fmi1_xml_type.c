@@ -28,7 +28,7 @@ fmi1_xml_display_unit_t* fmi1_xml_get_type_display_unit(fmi1_xml_real_typedef_t*
     fmi1_xml_variable_typedef_t* vt = (void*)t;
     fmi1_xml_real_type_props_t * props = (fmi1_xml_real_type_props_t*)vt->typeBase.baseTypeStruct;
     fmi1_xml_display_unit_t* du = props->displayUnit;
-    if(du->displayUnit) return du;
+    if(du) return du;
     return 0;
 }
 

@@ -43,7 +43,7 @@ extern "C" {
 */
 
 /** \brief Allocate an empty list */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_alloc_variable_list(fmi2_import_t* fmu, size_t size);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_alloc_variable_list(const fmi2_import_t* fmu, const size_t size);
 
 /**  \brief Free a variable list. Note that variable lists are allocated dynamically and must be freed when not needed any longer 
 	\param vl A variable list.
@@ -53,16 +53,16 @@ FMILIB_EXPORT void fmi2_import_free_variable_list(fmi2_import_variable_list_t* v
 /** \brief Make a copy of the list.
 	\param vl A variable list.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_clone_variable_list(fmi2_import_variable_list_t* vl);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_clone_variable_list(const fmi2_import_variable_list_t* vl);
 
 /** \brief  Get number of variables in a list */
-FMILIB_EXPORT size_t  fmi2_import_get_variable_list_size(fmi2_import_variable_list_t* vl);
+FMILIB_EXPORT size_t  fmi2_import_get_variable_list_size(const fmi2_import_variable_list_t* vl);
 
 /** \brief  Get a pointer to the list of the value references for all the variables */
 FMILIB_EXPORT const fmi2_value_reference_t* fmi2_import_get_value_referece_list(fmi2_import_variable_list_t* vl);
 
 /** \brief Get a single variable from the list*/
-FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable(fmi2_import_variable_list_t* vl, size_t  index);
+FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable(const fmi2_import_variable_list_t* vl, const size_t  index);
 
 /** \name Operations on variable lists. Every operation creates a new list. 
 @{
@@ -73,12 +73,12 @@ FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable(fmi2_import_varia
 \param toIndex Zero based end index, inclusive.
 \return A sublist. NULL is returned if toIndex is less than fromIndex or is larger than the list size or if memory allocation failed.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_sublist(fmi2_import_variable_list_t* vl, size_t  fromIndex, size_t  toIndex);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_sublist(const fmi2_import_variable_list_t* vl, const size_t  fromIndex, const size_t  toIndex);
 
 /** \brief Callback function typedef for the fmiFilterVariables. 
 
 The function should return 0 to prevent a variable from coming to the output list. */
-typedef int (*fmi2_import_variable_filter_function_ft)(fmi2_import_variable_t*vl, void * data);
+typedef int (*fmi2_import_variable_filter_function_ft)(const fmi2_import_variable_t*vl, const void * data);
 
 /** \brief Call the provided 'filter' function on every variable in the list and create a new list.
   
@@ -86,14 +86,14 @@ typedef int (*fmi2_import_variable_filter_function_ft)(fmi2_import_variable_t*vl
 \param filter A filter function according to ::fmi2_import_variable_filter_function_ft.
 \param context A parameter to be forwarded to the filter function.
  @return A sub-list with the variables for which filter returned non-zero value. */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_filter_variables(fmi2_import_variable_list_t* vl, fmi2_import_variable_filter_function_ft filter, void* context);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_filter_variables(const fmi2_import_variable_list_t* vl, const fmi2_import_variable_filter_function_ft filter, const void* context);
 
 /** \brief Create a new variable list by concatenating two lists.
   
 \param a A variable list.
 \param b A variable list.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_join_var_list(fmi2_import_variable_list_t* a, fmi2_import_variable_list_t* b);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_join_var_list(const fmi2_import_variable_list_t* a, const fmi2_import_variable_list_t* b);
 
 
 /** \brief Append a variable to the variable list.
@@ -101,21 +101,21 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_join_var_list(fmi2_import
 \param vl A variable list.
 \param v A variable.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_append_to_var_list(fmi2_import_variable_list_t* vl, fmi2_import_variable_t* v);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_append_to_var_list(fmi2_import_variable_list_t* vl, const fmi2_import_variable_t* v);
 
 /** \brief Prepend a variable to the variable list.
   
 \param vl A variable list.
 \param v A variable.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_prepend_to_var_list(fmi2_import_variable_list_t* vl, fmi2_import_variable_t* v);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_prepend_to_var_list(fmi2_import_variable_list_t* vl, const fmi2_import_variable_t* v);
 
 /** \brief Add a variable to a variable list.
   
 \param vl A variable list.
 \param v A variable.
 */
-FMILIB_EXPORT jm_status_enu_t fmi2_import_var_list_push_back(fmi2_import_variable_list_t* vl, fmi2_import_variable_t* v);
+FMILIB_EXPORT jm_status_enu_t fmi2_import_var_list_push_back(fmi2_import_variable_list_t* vl, const fmi2_import_variable_t* v);
 /**
   @}
  */

@@ -65,35 +65,35 @@ typedef struct fmi2_import_variable_list_t fmi2_import_variable_list_t;
 
 
 /** \brief Get the variable name */
-FMILIB_EXPORT const char* fmi2_import_get_variable_name(fmi2_import_variable_t*);
+FMILIB_EXPORT const char* fmi2_import_get_variable_name(const fmi2_import_variable_t*);
 
 /** \brief Get variable description. 
 	@return Description string or empty string ("") if no description in the XML file was given.
 */
-FMILIB_EXPORT const char* fmi2_import_get_variable_description(fmi2_import_variable_t*);
+FMILIB_EXPORT const char* fmi2_import_get_variable_description(const fmi2_import_variable_t*);
 
 /** \brief Get variable value reference */
-FMILIB_EXPORT fmi2_value_reference_t fmi2_import_get_variable_vr(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_value_reference_t fmi2_import_get_variable_vr(const fmi2_import_variable_t*);
 
 /**   \brief For scalar variable gives the type definition is present
 	@return Pointer of a type #fmi2_import_variable_typedef_t object or NULL of not present.
 */
-FMILIB_EXPORT fmi2_import_variable_typedef_t* fmi2_import_get_variable_declared_type(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_variable_typedef_t* fmi2_import_get_variable_declared_type(const fmi2_import_variable_t*);
 
 /** \brief Get variable base type */
-FMILIB_EXPORT fmi2_base_type_enu_t fmi2_import_get_variable_base_type(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_base_type_enu_t fmi2_import_get_variable_base_type(const fmi2_import_variable_t*);
 
 /** \brief Check if the variable has "start" attribute */
-FMILIB_EXPORT int   fmi2_import_get_variable_has_start(fmi2_import_variable_t*);
+FMILIB_EXPORT int   fmi2_import_get_variable_has_start(const fmi2_import_variable_t*);
 
 /** \brief Get variability attribute */
-FMILIB_EXPORT fmi2_variability_enu_t fmi2_import_get_variability(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_variability_enu_t fmi2_import_get_variability(const fmi2_import_variable_t*);
 
 /** \brief Get causality attribute */
-FMILIB_EXPORT fmi2_causality_enu_t fmi2_import_get_causality(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_causality_enu_t fmi2_import_get_causality(const fmi2_import_variable_t*);
 
 /** \brief Get initial attribute */
-FMILIB_EXPORT fmi2_initial_enu_t fmi2_import_get_initial(fmi2_import_variable_t* );
+FMILIB_EXPORT fmi2_initial_enu_t fmi2_import_get_initial(const fmi2_import_variable_t* );
 
 /** 
     \brief Get the variable that holds the previous value of this variable, if defined.
@@ -101,7 +101,7 @@ FMILIB_EXPORT fmi2_initial_enu_t fmi2_import_get_initial(fmi2_import_variable_t*
     @return If this variable is a discrete-time state, return the variable holds its previous value;
             NULL otherwise.
 */
-FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_previous(fmi2_import_variable_t* v);
+FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_previous(const fmi2_import_variable_t* v);
 
 /** \brief Get the canHandleMultipleSetPerTimeInstant flag for a variable.
 
@@ -109,41 +109,41 @@ FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_previous(fmi2_import_varia
     one super dense time instant. In other words, this input is not allowed to
     appear in an algebraic loop.
 */
-FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_canHandleMultipleSetPerTimeInstant(fmi2_import_variable_t* v);
+FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_canHandleMultipleSetPerTimeInstant(const fmi2_import_variable_t* v);
 
 /** \brief Cast general variable to a one with the specific type 
 	
 	@return Typed object or NULL if base type does not match
 */
-FMILIB_EXPORT fmi2_import_real_variable_t* fmi2_import_get_variable_as_real(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_real_variable_t* fmi2_import_get_variable_as_real(const fmi2_import_variable_t*);
 
 /** \brief Cast general variable to a one with the specific type 
 	
 	@return Typed object or NULL if base type does not match
 */
-FMILIB_EXPORT fmi2_import_integer_variable_t* fmi2_import_get_variable_as_integer(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_integer_variable_t* fmi2_import_get_variable_as_integer(const fmi2_import_variable_t*);
 /** \brief Cast general variable to a one with the specific type 
 	
 	@return Typed object or NULL if base type does not match
 */
-FMILIB_EXPORT fmi2_import_enum_variable_t* fmi2_import_get_variable_as_enum(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_enum_variable_t* fmi2_import_get_variable_as_enum(const fmi2_import_variable_t*);
 /** \brief Cast general variable to a one with the specific type 
 	
 	@return Typed object or NULL if base type does not match
 */
-FMILIB_EXPORT fmi2_import_string_variable_t* fmi2_import_get_variable_as_string(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_string_variable_t* fmi2_import_get_variable_as_string(const fmi2_import_variable_t*);
 /** \brief Cast general variable to a one with the specific type 
 	
 	@return Typed object or NULL if base type does not match
 */
-FMILIB_EXPORT fmi2_import_bool_variable_t* fmi2_import_get_variable_as_boolean(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_bool_variable_t* fmi2_import_get_variable_as_boolean(const fmi2_import_variable_t*);
 
 /** 
 	\brief Get the variable start attribute. 
 
 	@return The "start" attribute as specified in the XML file or variable nominal value.
 */
-FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_start(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_start(const fmi2_import_real_variable_t* v);
 
 /** 
     \brief Get the variable that this is a derivative of, if defined.
@@ -151,60 +151,60 @@ FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_start(fmi2_import_real_v
     @return If this variable is a derivative, return the variable that it is a derivative of;
             NULL otherwise.
 */
-FMILIB_EXPORT fmi2_import_real_variable_t* fmi2_import_get_real_variable_derivative_of(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_import_real_variable_t* fmi2_import_get_real_variable_derivative_of(const fmi2_import_real_variable_t* v);
 
 /** \brief Get the reinit flag for a real variable.
 
 	@return True if the real variable may change value at events.
 */
-FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_real_variable_reinit(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_real_variable_reinit(const fmi2_import_real_variable_t* v);
 
 /** \brief Get maximum value for the variable
 
 	@return Either the value specified in the XML file or DBL_MAX as defined in <float.h>
 */
-FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_max(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_max(const fmi2_import_real_variable_t* v);
 
 /** \brief Get minimal value for the variable.
 
 	@return Either the value specified in the XML file or negated DBL_MAX as defined in <float.h>
 */
-FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_min(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_min(const fmi2_import_real_variable_t* v);
 
 /** \brief Get nominal value for the variable*/
-FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_nominal(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_real_t fmi2_import_get_real_variable_nominal(const fmi2_import_real_variable_t* v);
 
 /** \brief Get associated "unit" object if any */
-FMILIB_EXPORT fmi2_import_unit_t* fmi2_import_get_real_variable_unit(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_import_unit_t* fmi2_import_get_real_variable_unit(const fmi2_import_real_variable_t* v);
 
 /** \brief Get associated "display unit" object if any */
-FMILIB_EXPORT fmi2_import_display_unit_t* fmi2_import_get_real_variable_display_unit(fmi2_import_real_variable_t* v);
+FMILIB_EXPORT fmi2_import_display_unit_t* fmi2_import_get_real_variable_display_unit(const fmi2_import_real_variable_t* v);
 
 /** \brief Get start value for the variable */
-FMILIB_EXPORT const char* fmi2_import_get_string_variable_start(fmi2_import_string_variable_t* v);
+FMILIB_EXPORT const char* fmi2_import_get_string_variable_start(const fmi2_import_string_variable_t* v);
 
 /** \brief Get start value for the variable */
-FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_boolean_variable_start(fmi2_import_bool_variable_t* v);
+FMILIB_EXPORT fmi2_boolean_t fmi2_import_get_boolean_variable_start(const fmi2_import_bool_variable_t* v);
 
 /** \brief Get start value for the variable*/
-FMILIB_EXPORT int fmi2_import_get_integer_variable_start(fmi2_import_integer_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_integer_variable_start(const fmi2_import_integer_variable_t* v);
 /** \brief Get minimal value for the variable */
-FMILIB_EXPORT int fmi2_import_get_integer_variable_min(fmi2_import_integer_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_integer_variable_min(const fmi2_import_integer_variable_t* v);
 /** \brief Get max value for the variable */
-FMILIB_EXPORT int fmi2_import_get_integer_variable_max(fmi2_import_integer_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_integer_variable_max(const fmi2_import_integer_variable_t* v);
 
 /** \brief Get start value for the variable*/
-FMILIB_EXPORT int fmi2_import_get_enum_variable_start(fmi2_import_enum_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_enum_variable_start(const fmi2_import_enum_variable_t* v);
 /** \brief Get minimal value for the variable */
-FMILIB_EXPORT int fmi2_import_get_enum_variable_min(fmi2_import_enum_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_enum_variable_min(const fmi2_import_enum_variable_t* v);
 /** \brief Get max value for the variable */
-FMILIB_EXPORT int fmi2_import_get_enum_variable_max(fmi2_import_enum_variable_t* v);
+FMILIB_EXPORT int fmi2_import_get_enum_variable_max(const fmi2_import_enum_variable_t* v);
 
 /** \brief Get the variable alias kind*/
-FMILIB_EXPORT fmi2_variable_alias_kind_enu_t fmi2_import_get_variable_alias_kind(fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_variable_alias_kind_enu_t fmi2_import_get_variable_alias_kind(const fmi2_import_variable_t*);
 
 /** \brief Get the original index in xml of the variable */
-FMILIB_EXPORT size_t fmi2_import_get_variable_original_order(fmi2_import_variable_t* v);
+FMILIB_EXPORT size_t fmi2_import_get_variable_original_order(const fmi2_import_variable_t* v);
 
 /** @} */
 

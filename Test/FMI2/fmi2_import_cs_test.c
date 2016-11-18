@@ -25,15 +25,17 @@
 
 #define BUFFER 1000
 
-void importlogger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message)
+void importlogger(const jm_callbacks* c, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message)
 {
+    (void)c;
         printf("module = %s, log level = %s: %s\n", module, jm_log_level_to_string(log_level), message);
 }
 
 /* Logger function used by the FMU internally */
 
-void fmilogger(fmi2_component_t c, fmi2_string_t instanceName, fmi2_status_t status, fmi2_string_t category, fmi2_string_t message, ...)
+void fmilogger(const fmi2_component_t c, const fmi2_string_t instanceName, const fmi2_status_t status, const fmi2_string_t category, const fmi2_string_t message, ...)
 {
+    (void)c;
     /* int len;
 	char msg[BUFFER]; */
 	va_list argp;	
@@ -54,6 +56,7 @@ int test_simulate_cs(fmi2_import_t* fmu)
 {
 	fmi2_status_t fmistatus;
 	jm_status_enu_t jmstatus;
+        fmi2_component_t component;
 
 	fmi2_string_t instanceName = "Test CS model instance";
 	fmi2_string_t fmuGUID;
@@ -85,26 +88,26 @@ int test_simulate_cs(fmi2_import_t* fmu)
     printf("GUID:      %s\n", fmuGUID);
 
 
-    jmstatus = fmi2_import_instantiate(fmu, instanceName, fmi2_cosimulation, fmuLocation, visible);
-	if (jmstatus == jm_status_error) {
+    component = fmi2_import_instantiate(fmu, instanceName, fmi2_cosimulation, fmuLocation, visible);
+	if (!component) {
 		printf("fmi2_import_instantiate failed\n");
 		do_exit(CTEST_RETURN_FAIL);
 	}
 
-        fmistatus = fmi2_import_setup_experiment(fmu, fmi2_true,
+        fmistatus = fmi2_import_setup_experiment(fmu, component,  fmi2_true,
             relativeTol, tstart, StopTimeDefined, tend);
     if(fmistatus != fmi2_status_ok) {
         printf("fmi2_import_setup_experiment failed\n");
         do_exit(CTEST_RETURN_FAIL);
     }
 
-        fmistatus = fmi2_import_enter_initialization_mode(fmu);
+        fmistatus = fmi2_import_enter_initialization_mode(fmu, component);
     if(fmistatus != fmi2_status_ok) {
         printf("fmi2_import_enter_initialization_mode failed\n");
         do_exit(CTEST_RETURN_FAIL);
     }
 
-        fmistatus = fmi2_import_exit_initialization_mode(fmu);
+        fmistatus = fmi2_import_exit_initialization_mode(fmu, component);
     if(fmistatus != fmi2_status_ok) {
         printf("fmi2_import_exit_initialization_mode failed\n");
         do_exit(CTEST_RETURN_FAIL);
@@ -121,16 +124,16 @@ int test_simulate_cs(fmi2_import_t* fmu)
 		fmistatus = fmi2_import_get_real(fmu, &vr, 1, &rvalue);
 		printf("rvalue = %f\n", rvalue);
 #endif 
-		fmistatus = fmi2_import_do_step(fmu, tcur, hstep, newStep);
+		fmistatus = fmi2_import_do_step(fmu, component, tcur, hstep, newStep);
 
 		for (k = 0; k < sizeof(compare_real_variables_vr)/sizeof(fmi2_value_reference_t); k++) {
 			fmi2_value_reference_t vr = compare_real_variables_vr[k];
 			fmi2_real_t rvalue;
-			fmistatus = fmi2_import_get_real(fmu, &vr, 1, &rvalue);
+			fmistatus = fmi2_import_get_real(fmu, component, &vr, 1, &rvalue);
 		}
 		{
 			fmi2_real_t val[2];
-			fmi2_import_get_real(fmu, compare_real_variables_vr, 2, val);
+			fmi2_import_get_real(fmu, component, compare_real_variables_vr, 2, val);
 			printf("%10g %10g\n", val[0],val[1]);
 		}
 
@@ -144,7 +147,7 @@ int test_simulate_cs(fmi2_import_t* fmu)
 		fmi2_value_reference_t vr = compare_real_variables_vr[k];
 		fmi2_real_t rvalue;
 		fmi2_real_t res;	
-		fmistatus = fmi2_import_get_real(fmu, &vr, 1, &rvalue);
+		fmistatus = fmi2_import_get_real(fmu, component, &vr, 1, &rvalue);
 		res = rvalue - simulation_results[k];
 		res = res > 0 ? res: -res; /* Take abs */
 		if (res > 3e-3) {
@@ -155,9 +158,9 @@ int test_simulate_cs(fmi2_import_t* fmu)
 		}
 	}
 
-	fmistatus = fmi2_import_terminate(fmu);
+	fmistatus = fmi2_import_terminate(fmu, component);
 
-	fmi2_import_free_instance(fmu);
+	fmi2_import_free_instance(fmu, component);
 
 	return 0;
 }

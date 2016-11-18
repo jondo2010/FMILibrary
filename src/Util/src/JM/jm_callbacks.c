@@ -44,11 +44,12 @@ const char* jm_log_level_to_string(jm_log_level_enu_t level) {
 	}
 }
 
-void jm_default_logger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message) {
+void jm_default_logger(const jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message){
+    (void)c;
 	fprintf(stderr, "[%s][%s] %s\n", jm_log_level_to_string(log_level), module, message);
 }
 
-void jm_log(jm_callbacks* cb, const char* module, jm_log_level_enu_t log_level, const char* fmt, ...) {
+void jm_log(const jm_callbacks* cb, const char* module, jm_log_level_enu_t log_level, const char* fmt, ...) {
 	va_list args;
 	if(log_level > cb->log_level) return;
     va_start (args, fmt);
@@ -56,22 +57,22 @@ void jm_log(jm_callbacks* cb, const char* module, jm_log_level_enu_t log_level, 
     va_end (args);
 }
 
-void jm_log_v(jm_callbacks* cb, const char* module, jm_log_level_enu_t log_level, const char* fmt, va_list ap) {
+void jm_log_v(const jm_callbacks* cb, const char* module, jm_log_level_enu_t log_level, const char* fmt, va_list ap) {
 	if(log_level > cb->log_level) return;
-    jm_vsnprintf(cb->errMessageBuffer, JM_MAX_ERROR_MESSAGE_SIZE, fmt, ap);
+    jm_vsnprintf((char *)cb->errMessageBuffer, JM_MAX_ERROR_MESSAGE_SIZE, fmt, ap);
 	if(cb->logger) {
 		cb->logger(cb,module, log_level, cb->errMessageBuffer);
 	}
 }
 
 #define CREATE_LOG_FUNCTIONS(log_level) \
-void jm_log_ ## log_level(jm_callbacks* cb, const char* module, const char* fmt, ...) { \
+void jm_log_ ## log_level(const jm_callbacks* cb, const char* module, const char* fmt, ...) { \
 	va_list args; \
     va_start (args, fmt); \
 	jm_log_v(cb, module, jm_log_level_ ## log_level, fmt, args); \
     va_end (args); \
 } \
-	void jm_log_ ## log_level ## _v(jm_callbacks* cb, const char* module, const char* fmt, va_list ap) { \
+	void jm_log_ ## log_level ## _v(const jm_callbacks* cb, const char* module, const char* fmt, va_list ap) { \
     jm_log_v(cb, module, jm_log_level_ ## log_level, fmt, ap); \
 }
 

@@ -34,7 +34,7 @@ extern "C" {
 	\return A pointer to the temporary directory name (absolute path, no terminating '/'). Caller is responsible for freeing the memory.
 		The function returns NULL if there were errors in which case a message is send to the logger.	
 */
-FMILIB_EXPORT char* fmi_import_mk_temp_dir(jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix);
+FMILIB_EXPORT char* fmi_import_mk_temp_dir(const jm_callbacks* cb, const char* systemTempDir, const char* tempPrefix);
 
 /**
 \brief Remove directory and all it contents.
@@ -42,7 +42,7 @@ FMILIB_EXPORT char* fmi_import_mk_temp_dir(jm_callbacks* cb, const char* systemT
 	\param dir - path to be removed.
 	\return Statuc success or error.
 */
-FMILIB_EXPORT jm_status_enu_t fmi_import_rmdir(jm_callbacks* cb, const char* dir);
+FMILIB_EXPORT jm_status_enu_t fmi_import_rmdir(const jm_callbacks* cb, const char* dir);
 
 /** 
 	\brief Create a file:// URL from absolute path
@@ -51,12 +51,12 @@ FMILIB_EXPORT jm_status_enu_t fmi_import_rmdir(jm_callbacks* cb, const char* dir
 	\return A pointer to the URL. Caller is responsible for freeing the memory.
 		The function returns NULL if there were errors in which case a message is send to the logger.	
 */
-FMILIB_EXPORT char* fmi_import_create_URL_from_abs_path(jm_callbacks* cb, const char* absPath);
+FMILIB_EXPORT char* fmi_import_create_URL_from_abs_path(const jm_callbacks* cb, const char* absPath);
 
 /** Given directory name fmu_unzipped_path and model identifier consturct Dll/so name
 	@return Pointer to a string with the file name. Caller is responsible for freeing the memory.
 */
-FMILIB_EXPORT char* fmi_import_get_dll_path(const char* fmu_unzipped_path, const char* model_identifier, jm_callbacks* callBackFunctions);
+FMILIB_EXPORT char* fmi_import_get_dll_path(const char* fmu_unzipped_path, const char* model_identifier, const jm_callbacks* callBackFunctions);
 
 /** Given directory name fmu_unzipped_path and model identifier consturct XML file name
 	@return Pointer to a string with the file name. Caller is responsible for freeing the memory.

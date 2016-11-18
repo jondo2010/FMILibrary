@@ -75,7 +75,7 @@ extern "C" {
 *    @param fmu An FMU object as returned by fmi2_import_parse_xml().
 *    @return NULL-terminated string with an error message.
 */
-FMILIB_EXPORT const char* fmi2_import_get_last_error(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_last_error(const fmi2_import_t* fmu);
 
 /**
 \brief Clear the error message.
@@ -83,7 +83,7 @@ FMILIB_EXPORT const char* fmi2_import_get_last_error(fmi2_import_t* fmu);
 * @return 0 if further processing is possible. If it returns 1 then the 
 *	error was not recoverable. The \p fmu object should then be freed and recreated.
 */
-FMILIB_EXPORT int fmi2_import_clear_last_error(fmi2_import_t* fmu);
+FMILIB_EXPORT int fmi2_import_clear_last_error(const fmi2_import_t* fmu);
 
 /**
 \brief Release the memory allocated
@@ -101,115 +101,115 @@ FMILIB_EXPORT void fmi2_import_free(fmi2_import_t* fmu);
 \brief Get model name. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_model_name(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_model_name(const fmi2_import_t* fmu);
 
 /** \brief Retrieve capability flags by ID. */
-FMILIB_EXPORT unsigned int fmi2_import_get_capability(fmi2_import_t* , fmi2_capabilities_enu_t id);
+FMILIB_EXPORT unsigned int fmi2_import_get_capability(const fmi2_import_t* , const fmi2_capabilities_enu_t id);
 
 /** 
 \brief Get model identifier for ModelExchange. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_model_identifier_ME(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_model_identifier_ME(const fmi2_import_t* fmu);
 
 /** 
 \brief Get model identifier for CoSimulation. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_model_identifier_CS(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_model_identifier_CS(const fmi2_import_t* fmu);
 
 /** 
 \brief Get FMU GUID. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_GUID(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_GUID(const fmi2_import_t* fmu);
 
 /** 
 \brief Get FMU description.
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_description(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_description(const fmi2_import_t* fmu);
 
 /** 
 \brief Get FMU author. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_author(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_author(const fmi2_import_t* fmu);
 
 /** 
 \brief Get FMU copyright information. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_copyright(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_copyright(const fmi2_import_t* fmu);
 
 /** 
 \brief Get FMU license information. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_license(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_license(const fmi2_import_t* fmu);
 
 /** \brief Get FMU version.
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_model_version(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_model_version(const fmi2_import_t* fmu);
 
 /** \brief Get FMI standard version (always 2.0). 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_model_standard_version(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_model_standard_version(const fmi2_import_t* fmu);
 
 /** \brief Get FMU generation tool. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_generation_tool(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_generation_tool(const fmi2_import_t* fmu);
 
 /** \brief Get FMU generation date and time. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT const char* fmi2_import_get_generation_date_and_time(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_generation_date_and_time(const fmi2_import_t* fmu);
 
 /** \brief Get variable naming convention used. 
 @param fmu An fmu object as returned by fmi2_import_parse_xml().
 */
-FMILIB_EXPORT fmi2_variable_naming_convension_enu_t fmi2_import_get_naming_convention(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_variable_naming_convension_enu_t fmi2_import_get_naming_convention(const fmi2_import_t* fmu);
 
 /** \brief Get the number of continuous states. 
 */
-FMILIB_EXPORT size_t fmi2_import_get_number_of_continuous_states(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_number_of_continuous_states(const fmi2_import_t* fmu);
 
 /** \brief Get the number of event indicators. */
-FMILIB_EXPORT size_t fmi2_import_get_number_of_event_indicators(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_number_of_event_indicators(const fmi2_import_t* fmu);
 
 /** \brief Get the start time for default experiment as specified in the XML file. */
-FMILIB_EXPORT double fmi2_import_get_default_experiment_start(fmi2_import_t* fmu);
+FMILIB_EXPORT double fmi2_import_get_default_experiment_start(const fmi2_import_t* fmu);
 
 /** \brief Get the stop time for default experiment as specified in the XML file. */
-FMILIB_EXPORT double fmi2_import_get_default_experiment_stop(fmi2_import_t* fmu);
+FMILIB_EXPORT double fmi2_import_get_default_experiment_stop(const fmi2_import_t* fmu);
 
 /** \brief Get the tolerance for default experiment as specified in the XML file. */
-FMILIB_EXPORT double fmi2_import_get_default_experiment_tolerance(fmi2_import_t* fmu);
+FMILIB_EXPORT double fmi2_import_get_default_experiment_tolerance(const fmi2_import_t* fmu);
 
 /** \brief Get the step size for default experiment as specified in the XML file. */
-FMILIB_EXPORT double fmi2_import_get_default_experiment_step(fmi2_import_t* fmu);
+FMILIB_EXPORT double fmi2_import_get_default_experiment_step(const fmi2_import_t* fmu);
 
 /** \brief Get the type of the FMU (model exchange or co-simulation) */
-FMILIB_EXPORT fmi2_fmu_kind_enu_t fmi2_import_get_fmu_kind(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_fmu_kind_enu_t fmi2_import_get_fmu_kind(const fmi2_import_t* fmu);
 
 /** \brief Get the list of all the type definitions in the model*/
-FMILIB_EXPORT fmi2_import_type_definitions_t* fmi2_import_get_type_definitions(fmi2_import_t* );
+FMILIB_EXPORT fmi2_import_type_definitions_t* fmi2_import_get_type_definitions(const fmi2_import_t* );
 
 /** \brief Get a list of all the unit definitions in the model. */
-FMILIB_EXPORT fmi2_import_unit_definitions_t* fmi2_import_get_unit_definitions(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_import_unit_definitions_t* fmi2_import_get_unit_definitions(const fmi2_import_t* fmu);
 
 /** \brief Get the variable with the same value reference that is not an alias*/
-FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_alias_base(fmi2_import_t* fmu,fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_alias_base(const fmi2_import_t* fmu,fmi2_import_variable_t*);
 
 /**
     Get the list of all the variables aliased to the given one (including the base one).
 
     Note that the list is ordered: base variable, aliases, negated aliases.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_variable_aliases(fmi2_import_t* fmu,fmi2_import_variable_t*);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_variable_aliases(const fmi2_import_t* fmu,const fmi2_import_variable_t*);
 
 /** \brief Get the list of all the variables in the model.
 * @param fmu An FMU object as returned by fmi2_import_parse_xml().
@@ -219,41 +219,41 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_variable_aliases(fmi2
 *
 * Note that variable lists are allocated dynamically and must be freed when not needed any longer.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_variable_list(fmi2_import_t* fmu, int sortOrder);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_variable_list(const fmi2_import_t* fmu, int sortOrder);
 
 /** \brief Create a variable list with a single variable.
   
 \param fmu An FMU object that this variable list will reference.
 \param v A variable.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_create_var_list(fmi2_import_t* fmu,fmi2_import_variable_t* v);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_create_var_list(const fmi2_import_t* fmu,const fmi2_import_variable_t* v);
 
 /** \brief Get the number of vendors that had annotations in the XML*/
-FMILIB_EXPORT size_t fmi2_import_get_vendors_num(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_vendors_num(const fmi2_import_t* fmu);
 
 /** \brief Get the name of the vendor with that had annotations in the XML by index */
-FMILIB_EXPORT const char* fmi2_import_get_vendor_name(fmi2_import_t* fmu, size_t index);
+FMILIB_EXPORT const char* fmi2_import_get_vendor_name(const fmi2_import_t* fmu, const size_t index);
 
 /** \brief Get the number of log categories defined in the XML */
-FMILIB_EXPORT size_t fmi2_import_get_log_categories_num(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_log_categories_num(const fmi2_import_t* fmu);
 
 /** \brief Get the log category by index */
-FMILIB_EXPORT const char* fmi2_import_get_log_category(fmi2_import_t* fmu, size_t index);
+FMILIB_EXPORT const char* fmi2_import_get_log_category(const fmi2_import_t* fmu, const size_t index);
 
 /** \brief Get the log category description by index */
-FMILIB_EXPORT const char* fmi2_import_get_log_category_description(fmi2_import_t* fmu, size_t index);
+FMILIB_EXPORT const char* fmi2_import_get_log_category_description(const fmi2_import_t* fmu, const size_t index);
 
 /** \brief Get the number of source files for ME defined in the XML */
-FMILIB_EXPORT size_t fmi2_import_get_source_files_me_num(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_source_files_me_num(const fmi2_import_t* fmu);
 
 /** \brief Get the ME source file by index */
-FMILIB_EXPORT const char* fmi2_import_get_source_file_me(fmi2_import_t* fmu, size_t index);
+FMILIB_EXPORT const char* fmi2_import_get_source_file_me(const fmi2_import_t* fmu, const size_t index);
 
 /** \brief Get the number of source files for CS defined in the XML */
-FMILIB_EXPORT size_t fmi2_import_get_source_files_cs_num(fmi2_import_t* fmu);
+FMILIB_EXPORT size_t fmi2_import_get_source_files_cs_num(const fmi2_import_t* fmu);
 
 /** \brief Get the CS source file by index */
-FMILIB_EXPORT const char* fmi2_import_get_source_file_cs(fmi2_import_t* fmu, size_t index);
+FMILIB_EXPORT const char* fmi2_import_get_source_file_cs(const fmi2_import_t* fmu, const size_t index);
 
 /**
 	\brief Get variable by variable name.
@@ -261,7 +261,7 @@ FMILIB_EXPORT const char* fmi2_import_get_source_file_cs(fmi2_import_t* fmu, siz
 	\param name - variable name
 	\return variable pointer.
 */
-FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_name(fmi2_import_t* fmu, const char* name);
+FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_name(const fmi2_import_t* fmu, const char* name);
 
 /**
 	\brief Get variable by value reference.
@@ -270,7 +270,7 @@ FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_name(fmi2_impo
 	\param vr - value reference
 	\return variable pointer.
 */
-FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_vr(fmi2_import_t* fmu, fmi2_base_type_enu_t baseType, fmi2_value_reference_t vr);
+FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_vr(const fmi2_import_t* fmu, fmi2_base_type_enu_t baseType, fmi2_value_reference_t vr);
 
 /** \brief Get the list of all the output variables in the model.
 * @param fmu An FMU object as returned by fmi2_import_parse_xml().
@@ -278,7 +278,7 @@ FMILIB_EXPORT fmi2_import_variable_t* fmi2_import_get_variable_by_vr(fmi2_import
 *
 * Note that variable lists are allocated dynamically and must be freed when not needed any longer.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_outputs_list(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_outputs_list(const fmi2_import_t* fmu);
 
 /** \brief Get the list of all the derivative variables in the model.
 * @param fmu An FMU object as returned by fmi2_import_parse_xml().
@@ -286,7 +286,7 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_outputs_list(fmi2_imp
 *
 * Note that variable lists are allocated dynamically and must be freed when not needed any longer.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_derivatives_list(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_derivatives_list(const fmi2_import_t* fmu);
 
 /** \brief Get the list of all the discrete state variables in the model.
 * @param fmu An FMU object as returned by fmi2_import_parse_xml().
@@ -294,7 +294,7 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_derivatives_list(fmi2
 *
 * Note that variable lists are allocated dynamically and must be freed when not needed any longer.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_discrete_states_list(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_discrete_states_list(const fmi2_import_t* fmu);
 
 /** \brief Get the list of all the initial unknown variables in the model.
 * @param fmu An FMU object as returned by fmi2_import_parse_xml().
@@ -302,7 +302,7 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_discrete_states_list(
 *
 * Note that variable lists are allocated dynamically and must be freed when not needed any longer.
 */
-FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_initial_unknowns_list(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_initial_unknowns_list(const fmi2_import_t* fmu);
 
 /** \brief Get dependency information in row-compressed format. 
  * @param fmu An FMU object as returned by fmi2_import_parse_xml(). 
@@ -313,7 +313,7 @@ FMILIB_EXPORT fmi2_import_variable_list_t* fmi2_import_get_initial_unknowns_list
  *                     means "depends on all" (no information in the XML). 
  * @param factorKind - outputs a pointer to the factor kind data. The values can be converted to ::fmi2_dependency_factor_kind_enu_t 
  */ 
-FMILIB_EXPORT void fmi2_import_get_outputs_dependencies(fmi2_import_t* fmu, size_t** startIndex, size_t** dependency, char** factorKind);
+FMILIB_EXPORT void fmi2_import_get_outputs_dependencies(const fmi2_import_t* fmu, size_t** startIndex, size_t** dependency, char** factorKind);
  
 /** \brief Get dependency information in row-compressed format. 
  * @param fmu An FMU object as returned by fmi2_import_parse_xml(). 

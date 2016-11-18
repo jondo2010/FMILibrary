@@ -112,7 +112,7 @@ FMILIB_EXPORT const char* fmi2_import_get_version(fmi2_import_t* fmu);
  * @param categories Which categories to log.
 * @return FMI status.
  */
- FMILIB_EXPORT fmi2_status_t fmi2_import_set_debug_logging(fmi2_import_t* fmu, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]);
+ FMILIB_EXPORT fmi2_status_t fmi2_import_set_debug_logging(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_boolean_t loggingOn, size_t nCategories, fmi2_string_t categories[]);
 
 /**
  * \brief Wrapper for the FMI function fmiInstantiate(...) 
@@ -122,19 +122,18 @@ FMILIB_EXPORT const char* fmi2_import_get_version(fmi2_import_t* fmu);
  * @param fmuType fmi2_model_exchange or fmi2_cosimulation.
  * @param fmuResourceLocation Access path URI to the FMU archive resources. If this is NULL pointer the FMU will get the path to the unzipped location.
  * @param visible Indicates whether or not the simulator application window shoule be visible.
- * @return Error status. Returnes jm_status_error if fmiInstantiate returned NULL, otherwise jm_status_success.
+ * @return The instantiated fmi2_component_t instance, or NULL if unsucessful
  */
-FMILIB_EXPORT jm_status_enu_t fmi2_import_instantiate(fmi2_import_t* fmu,
-    fmi2_string_t instanceName, fmi2_type_t fmuType,
-    fmi2_string_t fmuResourceLocation, fmi2_boolean_t visible);
+FMILIB_EXPORT fmi2_component_t fmi2_import_instantiate(const fmi2_import_t* fmu,
+    const fmi2_string_t instanceName, const fmi2_type_t fmuType,
+    fmi2_string_t fmuResourceLocation, const fmi2_boolean_t visible);
 
 /**
  * \brief Wrapper for the FMI function fmiFreeInstance(...) 
  * 
  * @param fmu An fmu description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  */
-FMILIB_EXPORT void fmi2_import_free_instance(fmi2_import_t* fmu);
-
+FMILIB_EXPORT void fmi2_import_free_instance(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiSetupExperiment(...)
@@ -147,10 +146,10 @@ FMILIB_EXPORT void fmi2_import_free_instance(fmi2_import_t* fmu);
  * @param stop_time Stop time of the experiment, if @p stop_time_defined is true
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_setup_experiment(fmi2_import_t* fmu,
-    fmi2_boolean_t toleranceDefined, fmi2_real_t tolerance,
-    fmi2_real_t startTime, fmi2_boolean_t stopTimeDefined,
-    fmi2_real_t stopTime);
+FMILIB_EXPORT fmi2_status_t fmi2_import_setup_experiment(const fmi2_import_t* fmu, fmi2_component_t c,
+    const fmi2_boolean_t toleranceDefined, const fmi2_real_t tolerance,
+    const fmi2_real_t startTime, const fmi2_boolean_t stopTimeDefined,
+    const fmi2_real_t stopTime);
 
 /**
  * \brief Calls the FMI function fmiEnterInitializationMode(...)
@@ -158,7 +157,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_setup_experiment(fmi2_import_t* fmu,
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_enter_initialization_mode(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_enter_initialization_mode(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiExitInitializationMode(...)
@@ -166,7 +165,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_enter_initialization_mode(fmi2_import_t*
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_exit_initialization_mode(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_exit_initialization_mode(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Wrapper for the FMI function fmiTerminate(...) 
@@ -174,7 +173,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_exit_initialization_mode(fmi2_import_t* 
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_terminate(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_terminate(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Wrapper for the FMI function fmiReset(...) 
@@ -182,7 +181,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_terminate(fmi2_import_t* fmu);
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_reset(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_reset(const fmi2_import_t* fmu, fmi2_component_t c);
 
 
 /**
@@ -194,7 +193,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_reset(fmi2_import_t* fmu);
  * @param value Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_real(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_real(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_real_t    value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiSetInteger(...) 
@@ -205,7 +204,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_real(fmi2_import_t* fmu, const fmi2_
  * @param value Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_integer(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_integer(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiSetBoolean(...) 
@@ -216,7 +215,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_integer(fmi2_import_t* fmu, const fm
  * @param value Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_boolean(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_boolean(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_boolean_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiSetString(...) 
@@ -227,7 +226,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_boolean(fmi2_import_t* fmu, const fm
  * @param value Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_string(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_string(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_string_t  value[]);
 
 
 /**
@@ -239,7 +238,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_string(fmi2_import_t* fmu, const fmi
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_real(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_real(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_real_t    value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiGetInteger(...) 
@@ -250,7 +249,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_real(fmi2_import_t* fmu, const fmi2_
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_integer_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiGetBoolean(...) 
@@ -261,7 +260,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer(fmi2_import_t* fmu, const fm
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_boolean_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiGetString(...) 
@@ -272,7 +271,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean(fmi2_import_t* fmu, const fm
  * @param value (Output)Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_string(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_string(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, fmi2_string_t  value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiGetTypesPlatform(...) 
@@ -280,7 +279,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_string(fmi2_import_t* fmu, const fmi
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return The platform the FMU was compiled for.
  */
-FMILIB_EXPORT const char* fmi2_import_get_types_platform(fmi2_import_t* fmu);
+FMILIB_EXPORT const char* fmi2_import_get_types_platform(const fmi2_import_t* fmu);
 
 /**
  * \brief Wrapper for the FMI function fmiGetFMUstate(...) 
@@ -289,7 +288,7 @@ FMILIB_EXPORT const char* fmi2_import_get_types_platform(fmi2_import_t* fmu);
  * @param s The state object to be set by the FMU
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_fmu_state           (fmi2_import_t* fmu, fmi2_FMU_state_t* s );
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_fmu_state           (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s );
 
 /**
  * \brief Wrapper for the FMI function fmiSetFMUstate(...) 
@@ -298,7 +297,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_fmu_state           (fmi2_import_t* 
  * @param s The FMU state object
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_fmu_state           (fmi2_import_t* fmu, fmi2_FMU_state_t s);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_fmu_state           (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s);
 
 /**
  * \brief Wrapper for the FMI function fmiFreeFMUstate(...) 
@@ -307,7 +306,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_fmu_state           (fmi2_import_t* 
  * @param s The FMU state object
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_free_fmu_state          (fmi2_import_t* fmu, fmi2_FMU_state_t* s);
+FMILIB_EXPORT fmi2_status_t fmi2_import_free_fmu_state          (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t* s);
 
 /**
  * \brief Wrapper for the FMI function fmiSerializedFMUstateSize(...) 
@@ -317,7 +316,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_free_fmu_state          (fmi2_import_t* 
  * @param sz The size of the serialized state in bytes
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_serialized_fmu_state_size(fmi2_import_t* fmu, fmi2_FMU_state_t s, size_t* sz);
+FMILIB_EXPORT fmi2_status_t fmi2_import_serialized_fmu_state_size(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s, size_t* sz);
 
 /**
  * \brief Wrapper for the FMI function fmiSerializeFMUstate(...) 
@@ -328,7 +327,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_serialized_fmu_state_size(fmi2_import_t*
  * @param sz The size of the data buffer
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_serialize_fmu_state     (fmi2_import_t* fmu, fmi2_FMU_state_t s, fmi2_byte_t data[], size_t sz);
+FMILIB_EXPORT fmi2_status_t fmi2_import_serialize_fmu_state     (const fmi2_import_t* fmu, fmi2_component_t c, fmi2_FMU_state_t s, fmi2_byte_t data[], size_t sz);
 
 /**
  * \brief Wrapper for the FMI function fmiSerializeFMUstate(...) 
@@ -339,7 +338,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_serialize_fmu_state     (fmi2_import_t* 
  * @param s The FMU state object to be created
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_de_serialize_fmu_state  (fmi2_import_t* fmu, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s);
+FMILIB_EXPORT fmi2_status_t fmi2_import_de_serialize_fmu_state  (const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_byte_t data[], size_t sz, fmi2_FMU_state_t* s);
 
 
 
@@ -355,7 +354,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_de_serialize_fmu_state  (fmi2_import_t* 
  * @param dz Calculated directional derivative on output.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_directional_derivative(fmi2_import_t* fmu, const fmi2_value_reference_t v_ref[], size_t nv,
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_directional_derivative(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t v_ref[], size_t nv,
                                                                    const fmi2_value_reference_t z_ref[], size_t nz,
                                                                    const fmi2_real_t dv[], fmi2_real_t dz[]);
 
@@ -372,7 +371,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_directional_derivative(fmi2_import_t
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_enter_event_mode(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_enter_event_mode(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Calls the FMI function fmiNewDiscreteStates(...) 
@@ -381,7 +380,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_enter_event_mode(fmi2_import_t* fmu);
  * @param eventInfo Pointer to fmi2_event_info_t structure that will be filled in.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_new_discrete_states(fmi2_import_t* fmu, fmi2_event_info_t* eventInfo);
+FMILIB_EXPORT fmi2_status_t fmi2_import_new_discrete_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_event_info_t* eventInfo);
 
 /**
  * \brief Calls the FMI function fmiEnterContinuousTimeMode(...) 
@@ -389,7 +388,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_new_discrete_states(fmi2_import_t* fmu, 
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_enter_continuous_time_mode(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_enter_continuous_time_mode(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Wrapper for the FMI function fmiSetTime(...) 
@@ -398,7 +397,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_enter_continuous_time_mode(fmi2_import_t
  * @param time Set the current time.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_time(fmi2_import_t* fmu, fmi2_real_t time);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_time(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_real_t time);
 
 /**
  * \brief Wrapper for the FMI function fmiSetContinuousStates(...) 
@@ -408,7 +407,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_time(fmi2_import_t* fmu, fmi2_real_t
  * @param nx Number of states.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_continuous_states(fmi2_import_t* fmu, const fmi2_real_t x[], size_t nx);
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_real_t x[], size_t nx);
 
 /**
  * \brief Wrapper for the FMI function fmiCompletedIntegratorStep(...) 
@@ -421,7 +420,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_continuous_states(fmi2_import_t* fmu
  * @param terminateSimulation (Output) Terminate simulation indicator.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_completed_integrator_step(fmi2_import_t* fmu,
+FMILIB_EXPORT fmi2_status_t fmi2_import_completed_integrator_step(const fmi2_import_t* fmu, fmi2_component_t c,
     fmi2_boolean_t noSetFMUStatePriorToCurrentPoint,
     fmi2_boolean_t* enterEventMode, fmi2_boolean_t* terminateSimulation);
 
@@ -433,7 +432,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_completed_integrator_step(fmi2_import_t*
  * @param nx Number of derivatives.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_derivatives(fmi2_import_t* fmu, fmi2_real_t derivatives[], size_t nx);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t derivatives[], size_t nx);
 
 /**
  * \brief Wrapper for the FMI function fmiGetEventIndicators(...) 
@@ -443,7 +442,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_derivatives(fmi2_import_t* fmu, fmi2
  * @param ni Number of event indicators.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_event_indicators(fmi2_import_t* fmu, fmi2_real_t eventIndicators[], size_t ni);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_event_indicators(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t eventIndicators[], size_t ni);
 
 /**
  * \brief Wrapper for the FMI function fmiGetContinuousStates(...) 
@@ -453,7 +452,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_event_indicators(fmi2_import_t* fmu,
  * @param nx Number of states.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_continuous_states(fmi2_import_t* fmu, fmi2_real_t states[], size_t nx);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t states[], size_t nx);
 
 /**
  * \brief Wrapper for the FMI function fmiGetNominalsOfContinuousStates(...) 
@@ -463,7 +462,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_continuous_states(fmi2_import_t* fmu
  * @param nx Number of nominal values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_nominals_of_continuous_states(fmi2_import_t* fmu, fmi2_real_t x_nominal[], size_t nx);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_nominals_of_continuous_states(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t x_nominal[], size_t nx);
 
 /**@} */
 
@@ -483,7 +482,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_nominals_of_continuous_states(fmi2_i
  * @param value Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_set_real_input_derivatives(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]);                                                  
+FMILIB_EXPORT fmi2_status_t fmi2_import_set_real_input_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiGetOutputDerivatives(...) 
@@ -495,7 +494,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_set_real_input_derivatives(fmi2_import_t
  * @param value (Output) Array of variable values.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_output_derivatives(fmi2_import_t* fmu, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]);                                              
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_output_derivatives(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[]);
 
 /**
  * \brief Wrapper for the FMI function fmiCancelStep(...) 
@@ -503,7 +502,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_output_derivatives(fmi2_import_
  * @param fmu A model description object returned by fmi2_import_parse_xml() that has loaded the FMI functions, see fmi2_import_create_dllfmu().
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_cancel_step(fmi2_import_t* fmu);
+FMILIB_EXPORT fmi2_status_t fmi2_import_cancel_step(const fmi2_import_t* fmu, fmi2_component_t c);
 
 /**
  * \brief Wrapper for the FMI function fmiDoStep(...) 
@@ -514,7 +513,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_cancel_step(fmi2_import_t* fmu);
  * @param newStep Indicates whether or not the last communication step was accepted by the master.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_do_step(fmi2_import_t* fmu, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep);
+FMILIB_EXPORT fmi2_status_t fmi2_import_do_step(const fmi2_import_t* fmu, fmi2_component_t c, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep);
 
 /**
  * \brief Wrapper for the FMI function fmiGetStatus(...) 
@@ -524,7 +523,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_do_step(fmi2_import_t* fmu, fmi2_real_t 
  * @param value (Output) FMI status value.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_status_t*  value);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_status_t*  value);
 
 /**
  * \brief Wrapper for the FMI function fmiGetRealStatus(...) 
@@ -534,7 +533,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_status(fmi2_import_t* fmu, const fmi
  * @param value (Output) FMI real value.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_real_t*    value);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_real_t*    value);
 
 /**
  * \brief Wrapper for the FMI function fmiGetIntegerStatus(...) 
@@ -544,7 +543,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_real_status(fmi2_import_t* fmu, cons
  * @param value (Output) FMI integer value.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_integer_t* value);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_integer_t* value);
 
 /**
  * \brief Wrapper for the FMI function fmiGetBooleanStatus(...) 
@@ -554,7 +553,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_integer_status(fmi2_import_t* fmu, c
  * @param value (Output) FMI boolean value.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_boolean_t* value);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_boolean_t* value);
 
 /**
  * \brief Wrapper for the FMI function fmiGetStringStatus(...) 
@@ -564,7 +563,7 @@ FMILIB_EXPORT fmi2_status_t fmi2_import_get_boolean_status(fmi2_import_t* fmu, c
  * @param value (Output) FMI string value.
  * @return FMI status.
  */
-FMILIB_EXPORT fmi2_status_t fmi2_import_get_string_status(fmi2_import_t* fmu, const fmi2_status_kind_t s, fmi2_string_t*  value);
+FMILIB_EXPORT fmi2_status_t fmi2_import_get_string_status(const fmi2_import_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, fmi2_string_t*  value);
 
 /**@} */
 

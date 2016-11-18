@@ -321,6 +321,7 @@ void  fmi2_log_forwarding_v(fmi2_component_environment_t c, fmi2_string_t instan
 }
 
 void  fmi2_default_callback_logger(fmi2_component_environment_t c, fmi2_string_t instanceName, fmi2_status_t status, fmi2_string_t category, fmi2_string_t message, ...) {
+    (void)c;
     va_list args;
     char buf[BUFSIZE], *curp;
     va_start (args, message);
@@ -338,7 +339,7 @@ void  fmi2_default_callback_logger(fmi2_component_environment_t c, fmi2_string_t
     va_end (args);
 }
 
-void fmi2_logger(jm_callbacks* cb, jm_string module, jm_log_level_enu_t log_level, jm_string message) {
+void fmi2_logger(const jm_callbacks* cb, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message) {
 	fmi2_callback_functions_t* c = (fmi2_callback_functions_t*)cb->context;
 	fmi2_status_t status;
 	if(!c ||!c->logger) return;

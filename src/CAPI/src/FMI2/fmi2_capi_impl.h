@@ -44,8 +44,6 @@ struct fmi2_capi_t {
 
 	fmi2_fmu_kind_enu_t standard;
 
-	fmi2_component_t					c;
-
 	int debugMode;
 
 	/* FMI common */

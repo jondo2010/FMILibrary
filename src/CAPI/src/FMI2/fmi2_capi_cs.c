@@ -21,31 +21,31 @@ extern "C" {
 #include <FMI2/fmi2_capi_impl.h>
 
 
-fmi2_status_t fmi2_capi_set_real_input_derivatives(fmi2_capi_t* fmu, const  fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[])  
+fmi2_status_t fmi2_capi_set_real_input_derivatives(const fmi2_capi_t* fmu, fmi2_component_t c, const  fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], const  fmi2_real_t value[])  
 {
-	return fmu->fmi2SetRealInputDerivatives(fmu->c, vr, nvr, order, value);
+	return fmu->fmi2SetRealInputDerivatives(c, vr, nvr, order, value);
 }
 
-fmi2_status_t fmi2_capi_get_real_output_derivatives(fmi2_capi_t* fmu, const  fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[])   
+fmi2_status_t fmi2_capi_get_real_output_derivatives(const fmi2_capi_t* fmu, fmi2_component_t c, const  fmi2_value_reference_t vr[], size_t nvr, const fmi2_integer_t order[], fmi2_real_t value[])   
 {
-	return fmu->fmi2GetRealOutputDerivatives(fmu->c, vr, nvr, order, value);
+	return fmu->fmi2GetRealOutputDerivatives(c, vr, nvr, order, value);
 }
 
-fmi2_status_t fmi2_capi_cancel_step(fmi2_capi_t* fmu)   
+fmi2_status_t fmi2_capi_cancel_step(const fmi2_capi_t* fmu, fmi2_component_t c)   
 {
-	return fmu->fmi2CancelStep(fmu->c);
+	return fmu->fmi2CancelStep(c);
 }
 
-fmi2_status_t fmi2_capi_do_step(fmi2_capi_t* fmu, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep)
+fmi2_status_t fmi2_capi_do_step(const fmi2_capi_t* fmu, fmi2_component_t c, fmi2_real_t currentCommunicationPoint, fmi2_real_t communicationStepSize, fmi2_boolean_t newStep)
 {
-	return fmu->fmi2DoStep(fmu->c, currentCommunicationPoint, communicationStepSize, newStep);
+	return fmu->fmi2DoStep(c, currentCommunicationPoint, communicationStepSize, newStep);
 }
 
 /* fmiGetStatus* */
 #define FMIGETSTATUSX(FNAME1, FNAME2,FSTATUSTYPE) \
-fmi2_status_t FNAME1(fmi2_capi_t* fmu, const fmi2_status_kind_t s, FSTATUSTYPE*  value) \
+fmi2_status_t FNAME1(const fmi2_capi_t* fmu, fmi2_component_t c, const fmi2_status_kind_t s, FSTATUSTYPE*  value) \
 { \
-	return fmu->FNAME2(fmu->c, s, value); \
+	return fmu->FNAME2(c, s, value); \
 }
 
 FMIGETSTATUSX(fmi2_capi_get_status,		fmi2GetStatus,		fmi2_status_t)

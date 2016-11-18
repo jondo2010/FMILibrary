@@ -25,15 +25,17 @@
 
 #define BUFFER 1000
 
-void importlogger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message)
+void importlogger(const jm_callbacks* c, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message)
 {
+    (void)c;
         printf("module = %s, log level = %s: %s\n", module, jm_log_level_to_string(log_level), message);
 }
 
 /* Logger function used by the FMU internally */
 
-void fmilogger(fmi1_component_t c, fmi1_string_t instanceName, fmi1_status_t status, fmi1_string_t category, fmi1_string_t message, ...)
+void fmilogger(const fmi1_component_t c, const fmi1_string_t instanceName, const fmi1_status_t status, const fmi1_string_t category, const fmi1_string_t message, ...)
 {
+    (void)c;
 	/* char msg[BUFFER];*/
 	va_list argp;
 	va_start(argp, message);
@@ -168,7 +170,7 @@ xml_test_files_t xml_test_files[] = {
 
 void test_xml(const char* xmlFileName, fmi1_import_t* fmu)
 {
-    int k;
+    size_t k;
     int foundxml = 0;
 
     for (k = 0; k < sizeof(xml_test_files)/sizeof(*xml_test_files); k++) {

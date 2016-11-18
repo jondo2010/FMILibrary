@@ -234,6 +234,7 @@ void fmi2_xml_init_integer_type_properties(fmi2_xml_integer_type_props_t* type) 
 }
 
 void fmi2_xml_init_enumeration_variable_properties(fmi2_xml_enum_variable_props_t* type, jm_callbacks* cb) {
+    (void)cb;
     fmi2_xml_init_variable_type_base(&type->typeBase, fmi2_xml_type_struct_enu_props,fmi2_base_type_enum);
 	type->quantity = 0;
     type->typeMin = 0;

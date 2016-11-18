@@ -26,7 +26,7 @@
 #include <FMI1/fmi1_import.h>
 
 
-void mylogger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message)
+void mylogger(const jm_callbacks* c, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message)
 {
         printf("module = %s, log level = %d: %s\n", module, log_level, message);
 }

@@ -37,63 +37,63 @@ extern "C" {
 	\addtogroup fmi2_xml_variables Functions for handling variable definitions.
 	@{
 	*/
-const char* fmi2_xml_get_variable_name(fmi2_xml_variable_t*);
-const char* fmi2_xml_get_variable_description(fmi2_xml_variable_t*);
+const char* fmi2_xml_get_variable_name(const fmi2_xml_variable_t*);
+const char* fmi2_xml_get_variable_description(const fmi2_xml_variable_t*);
 
-size_t fmi2_xml_get_variable_original_order(fmi2_xml_variable_t* v);
+size_t fmi2_xml_get_variable_original_order(const fmi2_xml_variable_t* v);
 
-fmi2_value_reference_t fmi2_xml_get_variable_vr(fmi2_xml_variable_t*);
+fmi2_value_reference_t fmi2_xml_get_variable_vr(const fmi2_xml_variable_t*);
 
 /*
     For scalar variable gives the type definition is present
 */
-fmi2_xml_variable_typedef_t* fmi2_xml_get_variable_declared_type(fmi2_xml_variable_t*);
-fmi2_base_type_enu_t fmi2_xml_get_variable_base_type(fmi2_xml_variable_t*);
+fmi2_xml_variable_typedef_t* fmi2_xml_get_variable_declared_type(const fmi2_xml_variable_t*);
+fmi2_base_type_enu_t fmi2_xml_get_variable_base_type(const fmi2_xml_variable_t*);
 
-int   fmi2_xml_get_variable_has_start(fmi2_xml_variable_t*);
+int   fmi2_xml_get_variable_has_start(const fmi2_xml_variable_t*);
 
-fmi2_variability_enu_t fmi2_xml_get_variability(fmi2_xml_variable_t*);
-fmi2_causality_enu_t fmi2_xml_get_causality(fmi2_xml_variable_t*);
-fmi2_initial_enu_t fmi2_xml_get_initial(fmi2_xml_variable_t*);
+fmi2_variability_enu_t fmi2_xml_get_variability(const fmi2_xml_variable_t*);
+fmi2_causality_enu_t fmi2_xml_get_causality(const fmi2_xml_variable_t*);
+fmi2_initial_enu_t fmi2_xml_get_initial(const fmi2_xml_variable_t*);
 
-fmi2_xml_variable_t* fmi2_xml_get_previous(fmi2_xml_variable_t* v);
-fmi2_boolean_t fmi2_xml_get_canHandleMultipleSetPerTimeInstant(fmi2_xml_variable_t* v);
+fmi2_xml_variable_t* fmi2_xml_get_previous(const fmi2_xml_variable_t* v);
+fmi2_boolean_t fmi2_xml_get_canHandleMultipleSetPerTimeInstant(const fmi2_xml_variable_t* v);
 
-fmi2_xml_real_variable_t* fmi2_xml_get_variable_as_real(fmi2_xml_variable_t*);
-fmi2_xml_integer_variable_t* fmi2_xml_get_variable_as_integer(fmi2_xml_variable_t*);
-fmi2_xml_enum_variable_t* fmi2_xml_get_variable_as_enum(fmi2_xml_variable_t*);
-fmi2_xml_string_variable_t* fmi2_xml_get_variable_as_string(fmi2_xml_variable_t*);
-fmi2_xml_bool_variable_t* fmi2_xml_get_variable_as_boolean(fmi2_xml_variable_t*);
+fmi2_xml_real_variable_t* fmi2_xml_get_variable_as_real(const fmi2_xml_variable_t*);
+fmi2_xml_integer_variable_t* fmi2_xml_get_variable_as_integer(const fmi2_xml_variable_t*);
+fmi2_xml_enum_variable_t* fmi2_xml_get_variable_as_enum(const fmi2_xml_variable_t*);
+fmi2_xml_string_variable_t* fmi2_xml_get_variable_as_string(const fmi2_xml_variable_t*);
+fmi2_xml_bool_variable_t* fmi2_xml_get_variable_as_boolean(const fmi2_xml_variable_t*);
 
-double fmi2_xml_get_real_variable_start(fmi2_xml_real_variable_t* v);
-fmi2_xml_real_variable_t* fmi2_xml_get_real_variable_derivative_of(fmi2_xml_real_variable_t* v);
-fmi2_boolean_t fmi2_xml_get_real_variable_reinit(fmi2_xml_real_variable_t* v);
-double fmi2_xml_get_real_variable_max(fmi2_xml_real_variable_t* v);
-double fmi2_xml_get_real_variable_min(fmi2_xml_real_variable_t* v);
-double fmi2_xml_get_real_variable_nominal(fmi2_xml_real_variable_t* v);
-fmi2_xml_unit_t* fmi2_xml_get_real_variable_unit(fmi2_xml_real_variable_t* v);
-fmi2_xml_display_unit_t* fmi2_xml_get_real_variable_display_unit(fmi2_xml_real_variable_t* v);
+double fmi2_xml_get_real_variable_start(const fmi2_xml_real_variable_t* v);
+fmi2_xml_real_variable_t* fmi2_xml_get_real_variable_derivative_of(const fmi2_xml_real_variable_t* v);
+fmi2_boolean_t fmi2_xml_get_real_variable_reinit(const fmi2_xml_real_variable_t* v);
+double fmi2_xml_get_real_variable_max(const fmi2_xml_real_variable_t* v);
+double fmi2_xml_get_real_variable_min(const fmi2_xml_real_variable_t* v);
+double fmi2_xml_get_real_variable_nominal(const fmi2_xml_real_variable_t* v);
+fmi2_xml_unit_t* fmi2_xml_get_real_variable_unit(const fmi2_xml_real_variable_t* v);
+fmi2_xml_display_unit_t* fmi2_xml_get_real_variable_display_unit(const fmi2_xml_real_variable_t* v);
 
-const char* fmi2_xml_get_string_variable_start(fmi2_xml_string_variable_t* v);
-fmi2_boolean_t fmi2_xml_get_boolean_variable_start(fmi2_xml_bool_variable_t* v);
+const char* fmi2_xml_get_string_variable_start(const fmi2_xml_string_variable_t* v);
+fmi2_boolean_t fmi2_xml_get_boolean_variable_start(const fmi2_xml_bool_variable_t* v);
 
-int fmi2_xml_get_integer_variable_start(fmi2_xml_integer_variable_t* v);
-int fmi2_xml_get_integer_variable_min(fmi2_xml_integer_variable_t* v);
-int fmi2_xml_get_integer_variable_max(fmi2_xml_integer_variable_t* v);
+int fmi2_xml_get_integer_variable_start(const fmi2_xml_integer_variable_t* v);
+int fmi2_xml_get_integer_variable_min(const fmi2_xml_integer_variable_t* v);
+int fmi2_xml_get_integer_variable_max(const fmi2_xml_integer_variable_t* v);
 
-int fmi2_xml_get_enum_variable_start(fmi2_xml_enum_variable_t* v);
-int fmi2_xml_get_enum_variable_min(fmi2_xml_enum_variable_t* v);
-int fmi2_xml_get_enum_variable_max(fmi2_xml_enum_variable_t* v);
+int fmi2_xml_get_enum_variable_start(const fmi2_xml_enum_variable_t* v);
+int fmi2_xml_get_enum_variable_min(const fmi2_xml_enum_variable_t* v);
+int fmi2_xml_get_enum_variable_max(const fmi2_xml_enum_variable_t* v);
 
 
-fmi2_variable_alias_kind_enu_t fmi2_xml_get_variable_alias_kind(fmi2_xml_variable_t*);
-fmi2_xml_variable_t* fmi2_xml_get_variable_alias_base(fmi2_xml_model_description_t* md,fmi2_xml_variable_t*);
+fmi2_variable_alias_kind_enu_t fmi2_xml_get_variable_alias_kind(const fmi2_xml_variable_t*);
+fmi2_xml_variable_t* fmi2_xml_get_variable_alias_base(const fmi2_xml_model_description_t* md,const fmi2_xml_variable_t*);
 
 /**
     Return the list of all the variables aliased to the given one (including the base one.
     The list is ordered: base variable, aliases, negated aliases.
 */
-jm_status_enu_t fmi2_xml_get_variable_aliases(fmi2_xml_model_description_t* md, fmi2_xml_variable_t*, jm_vector(jm_voidp)*);
+jm_status_enu_t fmi2_xml_get_variable_aliases(const fmi2_xml_model_description_t* md, const fmi2_xml_variable_t*, jm_vector(jm_voidp)*);
 /* fmi2_xml_variable_list_t* fmi2_xml_get_variable_aliases(fmi2_xml_model_description_t* md,fmi2_xml_variable_t*); */
 
 /**

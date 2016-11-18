@@ -165,6 +165,7 @@ void fmi2_xml_free_dependencies(fmi2_xml_dependencies_t* dep) {
 int fmi2_xml_check_model_structure(fmi2_xml_model_description_t* md) {
 	fmi2_xml_model_structure_t* ms = md->modelStructure;
 	jm_callbacks* cb = md->callbacks;
+        (void)cb;
 
 	if(!ms || !ms->isValidFlag) return 0;
 

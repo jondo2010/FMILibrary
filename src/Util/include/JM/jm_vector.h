@@ -290,7 +290,7 @@ typedef struct  jm_vector(T) {                \
  \
 extern jm_vector(T)* jm_vector_alloc(T)(size_t size,size_t capacity, jm_callbacks*);	\
     \
-extern size_t jm_vector_copy(T)(jm_vector(T)* destination, jm_vector(T)* source); \
+extern size_t jm_vector_copy(T)(jm_vector(T)* destination, const jm_vector(T)* source); \
 static jm_vector(T)* jm_vector_clone(T)(jm_vector(T)* v) {	\
     jm_vector(T)* ret = jm_vector_alloc(T)(v->size, v->size, v->callbacks);\
     if(ret) jm_vector_copy(T)(ret, v) ; \
@@ -312,21 +312,21 @@ static void jm_vector_free_data(T)(jm_vector(T)* a) { \
     } \
 } \
    \
-static size_t jm_vector_get_size(T)(jm_vector(T)* a) { return a->size; } \
+static size_t jm_vector_get_size(T)(const jm_vector(T)* a) { return a->size; } \
 \
-static T jm_vector_get_item(T)(jm_vector(T)* a, size_t index) { \
+static T jm_vector_get_item(T)(const jm_vector(T)* a, size_t index) { \
            assert(index < a->size); \
            return a->items[index]; \
 }\
-static T* jm_vector_get_itemp(T)(jm_vector(T)* a, size_t index) { \
+static T* jm_vector_get_itemp(T)(const jm_vector(T)* a, size_t index) { \
            assert(index < a->size); \
            return (a->items+index); \
 }\
- static T jm_vector_get_last(T)(jm_vector(T)* a) { \
+ static T jm_vector_get_last(T)(const jm_vector(T)* a) { \
         assert(a->size); \
         return (a->items[a->size-1]); \
 } \
-static T* jm_vector_get_lastp(T)(jm_vector(T)* a) { \
+static T* jm_vector_get_lastp(T)(const jm_vector(T)* a) { \
     if(a->size) return (a->items+(a->size-1)); \
     else return 0; \
 } \

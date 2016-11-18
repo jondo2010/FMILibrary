@@ -326,6 +326,7 @@ void  fmi1_log_forwarding_v(fmi1_component_t c, fmi1_string_t instanceName, fmi1
 }
 
 void  fmi1_default_callback_logger(fmi1_component_t c, fmi1_string_t instanceName, fmi1_status_t status, fmi1_string_t category, fmi1_string_t message, ...) {
+    (void)c;
     va_list args;
 
     char buf[BUFSIZE], *curp;
@@ -344,7 +345,7 @@ void  fmi1_default_callback_logger(fmi1_component_t c, fmi1_string_t instanceNam
     va_end (args);
 }
 
-void fmi1_logger(jm_callbacks* cb, jm_string module, jm_log_level_enu_t log_level, jm_string message) {
+void fmi1_logger(const jm_callbacks* cb, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message) {
 	fmi1_callback_functions_t* c = (fmi1_callback_functions_t*)cb->context;
 	fmi1_status_t status;
 	if(!c ||!c->logger) return;

@@ -24,8 +24,9 @@
 #define BUFFER 1000
 
 /* Logger function used by the FMU internally */
-static void fmi2logger(fmi2_component_environment_t env, fmi2_string_t instanceName, fmi2_status_t status, fmi2_string_t category, fmi2_string_t message, ...)
+static void fmi2logger(const fmi2_component_environment_t env, const fmi2_string_t instanceName, const fmi2_status_t status, const fmi2_string_t category, const fmi2_string_t message, ...)
 {
+    (void)env;
     int len;
 	char msg[BUFFER];
 	va_list argp;	
@@ -35,6 +36,7 @@ static void fmi2logger(fmi2_component_environment_t env, fmi2_string_t instanceN
 }
 
 static void stepFinished(fmi2_component_environment_t env, fmi2_status_t status) {
+    (void)env;
 	printf("stepFinished is called wiht fmiStatus = %s\n", fmi2_status_to_string(status));
 }
 	   

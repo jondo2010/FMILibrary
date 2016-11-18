@@ -25,7 +25,8 @@
 
 FILE* logFile;
 
-void logger(jm_callbacks* c, jm_string module, jm_log_level_enu_t log_level, jm_string message) {
+void logger(const jm_callbacks* c, const jm_string module, const jm_log_level_enu_t log_level, const jm_string message) {
+    (void)c;
 	char buf[10000];
 	const char* loadingstr = "Loading '";
 	/* need to replace platform specific message with a standard one */

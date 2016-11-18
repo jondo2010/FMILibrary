@@ -68,7 +68,7 @@ typedef struct fmi_xml_context_t fmi_import_context_t ;
 	@param callbacks - a pointer to the library callbacks for memory management and logging. May be NULL if defaults are utilized.
 	@return A new structure if memory allocation was successful.
 */
-FMILIB_EXPORT fmi_import_context_t* fmi_import_allocate_context( jm_callbacks* callbacks);
+FMILIB_EXPORT fmi_import_context_t* fmi_import_allocate_context(const jm_callbacks* callbacks);
 
 /**
 	\brief Free memory allocated for the library context.
